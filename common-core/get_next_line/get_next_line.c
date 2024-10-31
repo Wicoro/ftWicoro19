@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.S19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 10:55:19 by norban            #+#    #+#             */
-/*   Updated: 2024/10/31 15:00:53 by norban           ###   ########.fr       */
+/*   Updated: 2024/10/31 15:29:59 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,21 +89,24 @@ char	*get_next_line(int fd)
 		buf = malloc(sizeof(char) * buf_s);
 		if (!buf)
 			return (free(line), NULL);
-		r = read(fd, buf, buf_s);
-		while (r != -1 && r != 0 && get_buf_last_i(&buf, buf_s) == -1)
+		while (read(fd, buf, buf_s) > 0 && get_buf_last_i(&rest, buf_s) == -1)
 		{
 			ft_strncat(&line, &buf, buf_s);
-			r = read(fd, buf, buf_s);	
+			free(buf);
+			buf = malloc(sizeof(char) * buf_s);
+			if (!buf)
+				return (free(line), NULL);
 		}
 		ft_strncat(&line, &buf, get_buf_last_i(&buf, buf_s));
 		if (ft_strlen(line) == 0 && r <= 0)
 			return (free(rest), free(buf), free(line), NULL);
-		if (buf[0])		rest = ft_strdup(1 + buf + get_buf_last_i(&buf, buf_s));
+		if (buf[0])		
+			rest = ft_strdup(1 + buf + get_buf_last_i(&buf, buf_s));
 	}
 	return (line);
 }
 
-/*int	main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	int	f = open(av[1], 0);
 	char *s;
@@ -122,4 +125,4 @@ char	*get_next_line(int fd)
 	}
 	close(f);
 	return (0);
-}*/
+}
