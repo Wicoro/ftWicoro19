@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: norban <norban@student.S19.be>             +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 17:15:40 by norban            #+#    #+#             */
-/*   Updated: 2024/11/05 14:46:20 by norban           ###   ########.fr       */
+/*   Updated: 2024/11/05 15:56:24 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(char *str)
 {
@@ -72,7 +72,7 @@ void	ft_bzero(void *b, long n)
 		*(ptr++) = 0;
 }
 
-void	ft_free(char **ptr)
+void	free_ptr(char **ptr)
 {
 	if (*ptr)
 	{
