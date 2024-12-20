@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:04:10 by norban            #+#    #+#             */
-/*   Updated: 2024/12/18 16:53:58 by norban           ###   ########.fr       */
+/*   Updated: 2024/12/20 19:12:57 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ void	reverse_rotate_double(t_stack *stack_a, t_stack *stack_b);
 void	quicksort(int arr[], int low, int high);
 void	get_median(t_stack *stack, t_node **pivots, int count);
 void	stack_median_sort(t_stack *stack_a, t_stack *stack_b, int median_count);
-int	    checkSort(t_stack *stack_a, t_stack *stack_b);
-void	printCheckSort(t_stack *stack_a, t_stack *stack_b);
-void    smallStackSort(t_stack *stack_a, t_stack *stack_b);
+int		checksort(t_stack *stack_a, t_stack *stack_b);
+void	printchecksort(t_stack *stack_a, t_stack *stack_b);
+void	smallstacksort(t_stack *stack_a, t_stack *stack_b);
+void	printerror(void);
 
 #endif

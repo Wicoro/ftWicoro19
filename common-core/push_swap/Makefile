@@ -6,7 +6,7 @@
 #    By: norban <norban@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 12:21:47 by ajordan-          #+#    #+#              #
-#    Updated: 2024/12/18 16:54:56 by norban           ###   ########.fr        #
+#    Updated: 2024/12/20 18:07:04 by norban           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,11 +37,11 @@ CYAN		=	\033[0;96m
 WHITE		=	\033[0;97m
 
 PSW_DIR		=	push_swap/
-MAND_FILES	=	checkSort push_swap stack_sort quicksort create_tab get_median stack_median_sort smallStackSort
+MAND_FILES	=	checksort push_swap stack_sort quicksort create_tab get_median stack_median_sort smallstacksort
 COMM_DIR	=	common/
 COMM_FILES	=	swap rotate reverse_rotate push
 BONUS_DIR	=	bonus/
-BONUS_FILES	=	printCheckSort push_swap stack_sort quicksort create_tab get_median stack_median_sort
+BONUS_FILES	=	checksort printchecksort push_swap stack_sort quicksort create_tab get_median stack_median_sort smallstacksort
 
 SRC_FILES	=	$(addprefix $(PSW_DIR), $(MAND_FILES))
 COM_FILES	=	$(addprefix $(COMM_DIR), $(COMM_FILES))

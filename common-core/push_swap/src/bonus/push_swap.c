@@ -6,13 +6,13 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:27:00 by norban            #+#    #+#             */
-/*   Updated: 2024/12/18 16:47:38 by norban           ###   ########.fr       */
+/*   Updated: 2024/12/20 18:03:16 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	isNumber(char *str)
+int	isnumber(char *str)
 {
 	size_t	i;
 
@@ -28,16 +28,28 @@ int	isNumber(char *str)
 	return (1);
 }
 
-int	checkValidParams(int ac, char **av)
+int	checkvalidparams(int ac, char **av)
 {
-	int	i;
-	
+	int		i;
+	char	**input;
+
 	if (ac == 1)
 		return (0);
+	if (ac == 2)
+	{
+		input = ft_split(av[1], ' ');
+		i = 0;
+		while (input[i])
+		{
+			if (isnumber(input[i]) == 0)
+				return (0);
+			i++;
+		}
+	}
 	i = 1;
 	while (i < ac)
 	{
-		if (isNumber(av[i]) == 0)
+		if (isnumber(av[i]) == 0)
 			return (0);
 		i++;
 	}
@@ -49,18 +61,21 @@ int	main(int ac, char **av)
 	t_stack	*stack_a;
 	t_stack	*stack_b;
 
-	if (checkValidParams(ac, av) == 0)
+	if (checkvalidparams(ac, av) == 0)
 	{
-		ft_putstr_fd("Error", 1);
-		ft_putchar_fd('\n', 1);
+		ft_putstr_fd("Error", 2);
+		ft_putchar_fd('\n', 2);
 		return (0);
 	}
 	stack_a = malloc(sizeof(t_stack));
 	stack_b = malloc(sizeof(t_stack));
 	stack_b->size = 0;
 	create_stack(stack_a, ac - 1, av);
-	stack_sort(stack_a, stack_b);
-	printCheckSort(stack_a, stack_b);
+	if (ac <= 6)
+		smallstacksort(stack_a, stack_b);
+	else
+		stack_sort(stack_a, stack_b);
+	printchecksort(stack_a, stack_b);
 	free(stack_a);
 	free(stack_b);
 	return (0);

@@ -1,28 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   smallStackSort.c                                   :+:      :+:    :+:   */
+/*   checksort.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/18 16:36:16 by norban            #+#    #+#             */
-/*   Updated: 2024/12/18 17:57:09 by norban           ###   ########.fr       */
+/*   Created: 2024/12/20 17:58:11 by norban            #+#    #+#             */
+/*   Updated: 2024/12/20 19:14:14 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void    smallStackSort(t_stack *stack_a, t_stack *stack_b)
+int	checksort(t_stack *stack_a, t_stack *stack_b)
 {
-    if (stack_a->size <= 3)
-    {
-        while (checkSort(stack_a, stack_b) == 0)
-        {
-            if (stack_a->start < stack_a->start->next
-                && stack_a->start->next > stack_a->start->next->next)
-                swap(stack_a, 'a');
-            rotate(stack_a, 'a');
-        }
-        return ;
-    }
+	t_node	*node;
+
+	if (stack_b)
+	{
+		if (stack_b->size != 0)
+			return (0);
+	}
+	node = stack_a->start;
+	while (node != stack_a->end)
+	{
+		if (node->value > node->next->value)
+			return (0);
+		node = node->next;
+	}
+	return (1);
+}
+
+void	printerror(void)
+{
+	ft_putstr_fd("Error", 2);
+	ft_putchar_fd('\n', 2);
 }
