@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:10:09 by norban            #+#    #+#             */
-/*   Updated: 2024/12/20 19:16:37 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/03 16:44:27 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	create_stack(t_stack *stack, int size, char **av)
 		node = node->next;
 		i++;
 	}
+	if (size == 1)
+		free_split(input);
 	stack->end = node;
 	stack->size = i;
 	tab_quicksort(stack);

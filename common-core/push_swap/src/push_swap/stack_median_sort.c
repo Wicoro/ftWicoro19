@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 17:57:40 by norban            #+#    #+#             */
-/*   Updated: 2024/12/16 15:19:03 by norban           ###   ########.fr       */
+/*   Updated: 2024/12/30 17:52:12 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,7 @@ void	stack_median_sort(t_stack *stack_a, t_stack *stack_b, int median_count)
 		middle_median_pusher(stacks, node, i--, j++);
 	side_median_pusher(stacks, node);
 	free(pivots);
+	pivots = NULL;
 	free(stacks);
+	stacks = NULL;
 }

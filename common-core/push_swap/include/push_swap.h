@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:04:10 by norban            #+#    #+#             */
-/*   Updated: 2024/12/20 19:12:57 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/03 16:58:22 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,7 @@ int		checksort(t_stack *stack_a, t_stack *stack_b);
 void	printchecksort(t_stack *stack_a, t_stack *stack_b);
 void	smallstacksort(t_stack *stack_a, t_stack *stack_b);
 void	printerror(void);
+int		checkvalidstack(t_stack *stack_a);
+void	free_stack(t_stack *stack);
 
 #endif

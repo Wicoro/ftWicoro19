@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:10:09 by norban            #+#    #+#             */
-/*   Updated: 2024/12/18 15:16:28 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/03 16:44:27 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_node	*new_node(t_node *previous, char *value)
 	t_node	*node;
 
 	node = malloc(sizeof(t_node));
+	if (!node)
+		return (0);
 	node->next = NULL;
 	node->prev = previous;
 	node->value = ft_atoi(value);
@@ -28,6 +30,8 @@ t_node	*create_list(char *value)
 	t_node	*node;
 
 	node = malloc(sizeof(t_node));
+	if (!node)
+		return (0);
 	node->next = NULL;
 	node->prev = NULL;
 	node->value = ft_atoi(value);
@@ -78,19 +82,26 @@ void	tab_quicksort(t_stack *stack)
 void	create_stack(t_stack *stack, int size, char **av)
 {
 	int		i;
+	char	**input;
 	t_node	*node;
 
-	i = 1;
-	node = create_list(av[i++]);
+	i = 0;
+	if (size == 1)
+		input = ft_split(av[1], ' ');
+	else
+		input = &av[1];
+	node = create_list(input[i++]);
 	stack->start = node;
-	while (i <= size)
+	while (input[i])
 	{
-		if (av)
-			node->next = new_node(node, av[i]);
+		if (input)
+			node->next = new_node(node, input[i]);
 		node = node->next;
 		i++;
 	}
+	if (size == 1)
+		free_split(input);
 	stack->end = node;
-	stack->size = size;
+	stack->size = i;
 	tab_quicksort(stack);
 }

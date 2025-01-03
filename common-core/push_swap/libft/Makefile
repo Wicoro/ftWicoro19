@@ -6,7 +6,7 @@
 #    By: norban <norban@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 09:40:12 by norban            #+#    #+#              #
-#    Updated: 2024/11/27 15:18:54 by norban           ###   ########.fr        #
+#    Updated: 2025/01/03 14:32:06 by norban           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,11 +41,11 @@ FTMEM		=	ft_bzero ft_calloc ft_memchr ft_memcmp ft_memmove ft_memset
 
 FTPUT		=	ft_putchar_fd ft_putendl_fd ft_putnbr_fd ft_putstr_fd
 
-FTTO		=	ft_atoi ft_itoa ft_tolower ft_toupper
+FTTO		=	ft_atoi ft_itoa ft_tolower ft_toupper atoi_too_big
 
 FTSTR		=	ft_split ft_strchr ft_strdup ft_striteri ft_strjoin \
 				ft_strlcat ft_strlcpy ft_strlen ft_strmapi ft_strncmp \
-				ft_strnstr ft_strrchr ft_strtrim ft_substr
+				ft_strnstr ft_strrchr ft_strtrim ft_substr ft_free_split
 
 FTLST		=	ft_lstadd_back ft_lstadd_front ft_lstclear ft_lstdelone \
 				ft_lstiter ft_lstlast ft_lstmap ft_lstnew ft_lstsize
