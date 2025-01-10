@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 16:04:10 by norban            #+#    #+#             */
-/*   Updated: 2025/01/03 16:58:22 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/09 18:21:55 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ typedef struct s_stacks_pivots
 void	create_stack(t_stack *stack, int size, char **value);
 void	stack_sort(t_stack *stack_a, t_stack *stack_b);
 void	swap(t_stack *stack, char c);
-void	swap_double(t_stack *stack_a, t_stack *stack_b);
+void	swap_double(t_stack *stack_a, t_stack *stack_b, char c);
 void	push(t_stack *stack_a, t_stack *stack_b, char c);
 void	rotate(t_stack *stack, char c);
 void	numbered_rotate(t_stack *s_a, t_stack *s_b, int count, t_node *node);
-void	rotate_double(t_stack *stack_a, t_stack *stack_b);
+void	rotate_double(t_stack *stack_a, t_stack *stack_b, char c);
 void	reverse_rotate(t_stack *stack, char c);
 void	numbered_rrotate(t_stack *s_a, t_stack *s_b, int count, t_node *node);
-void	reverse_rotate_double(t_stack *stack_a, t_stack *stack_b);
+void	reverse_rotate_double(t_stack *stack_a, t_stack *stack_b, char c);
 void	quicksort(int arr[], int low, int high);
 void	get_median(t_stack *stack, t_node **pivots, int count);
 void	stack_median_sort(t_stack *stack_a, t_stack *stack_b, int median_count);
@@ -61,5 +61,6 @@ void	smallstacksort(t_stack *stack_a, t_stack *stack_b);
 void	printerror(void);
 int		checkvalidstack(t_stack *stack_a);
 void	free_stack(t_stack *stack);
+int		read_sort(t_stack *stack_a, t_stack *stack_b);
 
 #endif

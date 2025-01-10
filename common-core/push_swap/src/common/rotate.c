@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:57:08 by norban            #+#    #+#             */
-/*   Updated: 2025/01/03 16:04:19 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/09 18:21:30 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,12 @@ void	rotate(t_stack *stack, char c)
 		ft_putstr_fd("rb\n", 1);
 }
 
-void	rotate_double(t_stack *stack_a, t_stack *stack_b)
+void	rotate_double(t_stack *stack_a, t_stack *stack_b, char c)
 {
 	rotate(stack_a, 'c');
 	rotate(stack_b, 'c');
-	ft_putstr_fd("rr\n", 1);
+	if (c == 'r')
+		ft_putstr_fd("rr\n", 1);
 }
 
 void	numbered_rotate(t_stack *s_a, t_stack *s_b, int count, t_node *node)

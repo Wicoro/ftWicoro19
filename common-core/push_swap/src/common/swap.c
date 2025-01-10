@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 17:58:39 by norban            #+#    #+#             */
-/*   Updated: 2024/12/18 15:19:08 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/09 18:22:48 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,10 @@ void	swap(t_stack *stack, char c)
 /*
 	Swap the 2 first value of stack A and B
 */
-void	swap_double(t_stack *stack_a, t_stack *stack_b)
+void	swap_double(t_stack *stack_a, t_stack *stack_b, char c)
 {
 	swap(stack_a, 'c');
 	swap(stack_b, 'c');
-	ft_putstr_fd("ss\n", 1);
+	if (c == 'r')
+		ft_putstr_fd("ss\n", 1);
 }

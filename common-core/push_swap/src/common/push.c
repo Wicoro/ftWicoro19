@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:02:14 by norban            #+#    #+#             */
-/*   Updated: 2024/12/18 15:19:59 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/09 17:17:41 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,6 @@ void	push(t_stack *stack_a, t_stack *stack_b, char c)
 	stack_a->size += 1;
 	if (c == 'a')
 		ft_putstr_fd("pa\n", 1);
-	else
+	else if (c == 'b')
 		ft_putstr_fd("pb\n", 1);
 }

@@ -6,13 +6,17 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:51:07 by norban            #+#    #+#             */
-/*   Updated: 2025/01/03 14:37:22 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/09 16:48:45 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
+# include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
 
@@ -69,5 +73,11 @@ void	ft_lstiter(t_list *lst, void (*f)(void *));
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int		atoi_too_big(char *str);
 void	free_split(char **str);
+int		gnl_strnjoin(char **dest, char **str, int size);
+char	*gnl_strdup(char *str);
+int		get_buf_last_i(char **buf, int size);
+int		process_rest_to_line(char **buf, char **line);
+char	*get_next_line(int fd);
+void	gnl_free(char **ptr);
 
 #endif

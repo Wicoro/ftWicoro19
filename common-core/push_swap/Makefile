@@ -6,7 +6,7 @@
 #    By: norban <norban@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 12:21:47 by ajordan-          #+#    #+#              #
-#    Updated: 2025/01/03 17:12:21 by norban           ###   ########.fr        #
+#    Updated: 2025/01/09 17:03:14 by norban           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ MAND_FILES	=	checksort push_swap stack_sort quicksort create_tab get_median stac
 COMM_DIR	=	common/
 COMM_FILES	=	swap rotate reverse_rotate push
 BONUS_DIR	=	bonus/
-BONUS_FILES	=	checksort printchecksort push_swap stack_sort quicksort create_tab get_median stack_median_sort smallstacksort stack_manager
+BONUS_FILES	=	checksort printchecksort checker create_tab stack_manager quicksort
 
 SRC_FILES	=	$(addprefix $(PSW_DIR), $(MAND_FILES))
 COM_FILES	=	$(addprefix $(COMM_DIR), $(COMM_FILES))

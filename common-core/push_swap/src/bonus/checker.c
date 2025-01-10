@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.c                                        :+:      :+:    :+:   */
+/*   checker.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 15:27:00 by norban            #+#    #+#             */
-/*   Updated: 2025/01/03 17:13:10 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/09 17:46:42 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,8 @@ int	main(int ac, char **av)
 	create_stack(stack_a, ac - 1, av);
 	if (checkvalidstack(stack_a) == 0)
 		return (free_stack(stack_a), free_stack(stack_b), printerror(), 0);
-	if (stack_a->size < 6 && checksort(stack_a, stack_b) == 0)
-		smallstacksort(stack_a, stack_b);
-	else if (checksort(stack_a, stack_b) == 0)
-		stack_sort(stack_a, stack_b);
-	printchecksort(stack_a, stack_b);
+	if (read_sort(stack_a, stack_b) != 1)
+		printchecksort(stack_a, stack_b);
 	free_stack(stack_a);
 	free_stack(stack_b);
 	return (0);

@@ -6,7 +6,7 @@
 #    By: norban <norban@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/08 09:40:12 by norban            #+#    #+#              #
-#    Updated: 2025/01/03 14:32:06 by norban           ###   ########.fr        #
+#    Updated: 2025/01/09 16:47:12 by norban           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,8 @@ FTTO		=	ft_atoi ft_itoa ft_tolower ft_toupper atoi_too_big
 
 FTSTR		=	ft_split ft_strchr ft_strdup ft_striteri ft_strjoin \
 				ft_strlcat ft_strlcpy ft_strlen ft_strmapi ft_strncmp \
-				ft_strnstr ft_strrchr ft_strtrim ft_substr ft_free_split
+				ft_strnstr ft_strrchr ft_strtrim ft_substr ft_free_split \
+				get_next_line get_next_line_utils
 
 FTLST		=	ft_lstadd_back ft_lstadd_front ft_lstclear ft_lstdelone \
 				ft_lstiter ft_lstlast ft_lstmap ft_lstnew ft_lstsize
