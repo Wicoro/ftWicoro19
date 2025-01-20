@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 00:31:00 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 19:24:55 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:18:25 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ int	check_border(t_map *map)
 	while (i < map->width * map->height)
 	{
 		if ((map->tiles[i]->coord->x == 0
-			|| map->tiles[i]->coord->x == map->width - 1
-			|| map->tiles[i]->coord->y == 0
-			|| map->tiles[i]->coord->y == map->height - 1)
+				|| map->tiles[i]->coord->x == map->width - 1
+				|| map->tiles[i]->coord->y == 0
+				|| map->tiles[i]->coord->y == map->height - 1)
 			&& map->tiles[i]->value != '1')
 			return (0);
 		i++;
@@ -30,9 +30,16 @@ int	check_border(t_map *map)
 	return (1);
 }
 
+int	check_map_size(t_map *map)
+{
+	if (map->height > 21 || map->width > 38)
+		return (0);
+	return (1);
+}
+
 int	check_map(t_map *map)
-{	
-	if (!map || check_border(map) == 0)
+{
+	if (!map || check_border(map) == 0 || check_map_size(map) == 0)
 		return (free(map), 0);
 	if (check_road(map) == 0)
 		return (free(map), 0);

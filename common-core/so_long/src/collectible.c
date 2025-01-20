@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/16 01:48:41 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 16:20:08 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:19:23 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	reset_collectibles_state(t_game *game)
 	{
 		game->sprites[3 + i]->state = 0;
 		i++;
-	}	
+	}
 }
 
 void	create_collectible_list(t_game *game)
@@ -70,10 +70,10 @@ void	break_collectible(t_game *game)
 			&& game->sprites[3 + i]->state < 11)
 		{
 			game->sprites[3 + i]->state++;
-			break;
+			break ;
 		}
 		i++;
-	}		
+	}
 }
 
 void	display_collectible(t_game *game)
@@ -86,7 +86,7 @@ void	display_collectible(t_game *game)
 	{
 		if (game->sprites[3 + i]->state <= 10)
 			mlx_put_image_to_window(game->mlx, game->win,
-				game->imgs[11 + game->sprites[3 + i]->state], 
+				game->imgs[11 + game->sprites[3 + i]->state],
 				game->sprites[3 + i]->coord->x, game->sprites[3 + i]->coord->y);
 		if (game->sprites[3 + i]->state > 10)
 			game->mined_coll++;

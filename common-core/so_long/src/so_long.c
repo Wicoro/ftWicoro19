@@ -6,13 +6,13 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:38:04 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 19:05:52 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:08:43 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
 	t_game	*game;
 	t_map	*map;

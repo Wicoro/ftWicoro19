@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/10 11:44:57 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 19:18:29 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:48:24 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,20 @@
 # include "mlx.h"
 # include <stdio.h>
 
-typedef struct	s_coord {
+typedef struct s_coord
+{
 	int	x;
 	int	y;
 }	t_coord;
 
-typedef struct s_tile {
+typedef struct s_tile
+{
 	t_coord	*coord;
 	char	value;
 }	t_tile;
 
-typedef struct s_map {
+typedef struct s_map
+{
 	t_tile	**tiles;
 	int		height;
 	int		width;
@@ -35,19 +38,21 @@ typedef struct s_map {
 	int		z_nb;
 }	t_map;
 
-typedef struct	s_sprite {
+typedef struct s_sprite
+{
 	char	*path;
 	int		state;
 	t_coord	*coord;
 }	t_sprite;
 
-typedef struct	s_game {
+typedef struct s_game
+{
 	void		*mlx;
 	void		*win;
 	void		*imgs[22];
 	t_map		*map;
-    int     	width;
-    int     	height;
+	int			width;
+	int			height;
 	int			movement;
 	char		*move_str;
 	int			mined_coll;
@@ -82,5 +87,9 @@ void	free_tiles(t_tile **tiles);
 void	break_collectible(t_game *game);
 t_tile	*get_mc_spawn(t_map *map);
 void	destroy_all_images(t_game *game);
+void	recursive_access_checker(t_map *map, t_tile **accessible, t_tile *tile);
+t_tile	*new_tile(char value, int width, int i, int j);
+void	create_tiles(char *line, t_tile **tiles, t_map *map, int fd);
+void	process_size(int *height, int *width, char *line, int *valid);
 
 #endif

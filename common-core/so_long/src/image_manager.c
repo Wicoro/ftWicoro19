@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 14:41:42 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 15:08:11 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:07:34 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,13 @@ void	set_ingame_background(t_game *game)
 	while (game->map->tiles[i])
 	{
 		if (game->map->tiles[i]->value == '1')
-			mlx_put_image_to_window(game->mlx, game->win, game->imgs[5], 
+			mlx_put_image_to_window(game->mlx, game->win, game->imgs[5],
 				game->map->tiles[i]->coord->x * 100,
 				game->map->tiles[i]->coord->y * 100);
 		else
 			mlx_put_image_to_window(game->mlx, game->win, game->imgs[4],
 				game->map->tiles[i]->coord->x * 100,
 				game->map->tiles[i]->coord->y * 100);
-		
 		i++;
 	}
 }

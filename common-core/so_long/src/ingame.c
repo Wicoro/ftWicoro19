@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 23:28:44 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 19:45:54 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:09:07 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	ingame_key(int keycode, t_game *game)
 {
 	if (keycode == 65307)
 		swap_view(game, 1);
-	else if (keycode == 100 || keycode == 113 || keycode == 115 || keycode == 122)
+	else if (keycode == 100 || keycode == 113
+		|| keycode == 115 || keycode == 122)
 		move_mc(game, keycode);
 	else if (keycode == 32)
 		break_collectible(game);

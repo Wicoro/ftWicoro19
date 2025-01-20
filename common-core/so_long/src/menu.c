@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 15:31:02 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 18:22:01 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:08:29 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 int	menu_key(int keycode, t_game *game)
 {
-	if (keycode == 65307 ||
-		(keycode == 32 && game->sprites[0]->coord->y == 470))
+	if (keycode == 65307
+		|| (keycode == 32 && game->sprites[0]->coord->y == 470))
 		end_game(game);
 	if (keycode == 122 || keycode == 115)
 	{

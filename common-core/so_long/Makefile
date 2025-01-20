@@ -37,6 +37,7 @@ SRC_LIST	= 	so_long.c \
 				image_creator.c \
 				ingame.c \
 				create_map.c \
+				create_map_utils.c \
 				map_checker.c \
 				map_road_checker.c \
 				map_road_checker_2.c \

@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 20:09:17 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 16:45:16 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:07:18 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	*create_image(t_game *game, char *path, int width, int height)
 {
 	void	*img;
-	
+
 	path = ft_strjoin("texture/", path);
 	img = mlx_xpm_file_to_image(game->mlx, path, &width, &height);
 	free(path);

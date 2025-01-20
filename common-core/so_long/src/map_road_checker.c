@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 20:53:24 by norban            #+#    #+#             */
-/*   Updated: 2025/01/16 02:45:07 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:15:13 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_tile	*get_mc_spawn(t_map *map)
 {
 	int	i;
-	
+
 	i = 0;
 	while (i < map->height * map->width)
 	{
@@ -32,7 +32,7 @@ t_tile	**get_objectives(t_map *map)
 	int		i;
 	int		j;
 
-	objectives = malloc(sizeof(t_tile*) * (map->c_nb + 2));
+	objectives = malloc(sizeof(t_tile *) * (map->c_nb + 2));
 	if (!objectives)
 		return (0);
 	i = 0;
@@ -53,7 +53,7 @@ int	objectives_in_accessible(t_tile **objectives, t_tile **accessible)
 	int	i;
 	int	j;
 	int	found;
-	
+
 	i = 0;
 	while (objectives[i])
 	{
@@ -80,7 +80,7 @@ int	check_road(t_map *map)
 	t_tile	**objectives;
 	t_tile	**accessible;
 	int		return_val;
-	
+
 	mc_spawn = get_mc_spawn(map);
 	objectives = get_objectives(map);
 	accessible = get_accessible(map, mc_spawn);

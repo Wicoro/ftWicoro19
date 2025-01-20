@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 23:18:22 by norban            #+#    #+#             */
-/*   Updated: 2025/01/17 19:44:36 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/20 16:48:55 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ t_tile	*new_tile(char value, int width, int i, int j)
 {
 	t_tile	*tile;
 	int		y;
-	
+
 	tile = malloc(sizeof(t_tile));
 	if (!tile)
 		return (0);
@@ -40,29 +40,13 @@ void	get_map_tiles(t_map *map, char *av)
 	t_tile	**tiles;
 	char	*line;
 	int		fd;
-	int		i;
-	int		j;
 
-	tiles = malloc(sizeof(t_tile*) * ((map->width * map->height) + 1));
+	tiles = malloc(sizeof(t_tile *) * ((map->width * map->height) + 1));
 	if (!tiles)
 		return ;
 	fd = open(av, O_RDONLY);
 	line = get_next_line(fd);
-	i = 0;
-	while (line)
-	{
-		j = 0;
-		while (j < map->width)
-		{
-			tiles[i] = new_tile(line[j], map->width, i, j);
-			i++;
-			j++;
-		}
-		free(line);
-		line = get_next_line(fd);
-	}
-	close(fd);
-	tiles[i] = 0;
+	create_tiles(line, tiles, map, fd);
 	map->tiles = tiles;
 }
 
@@ -73,7 +57,7 @@ int	get_map_dimension(t_map *map, char *av)
 	int		height;
 	int		width;
 	int		valid;
-	
+
 	fd = open(av, O_RDONLY);
 	height = 0;
 	valid = 1;
@@ -81,12 +65,7 @@ int	get_map_dimension(t_map *map, char *av)
 	width = ft_strlen(line) - 1;
 	while (line)
 	{
-		height++;
-		if ((line[ft_strlen(line) - 1] == '\n'
-			&& (size_t) width != ft_strlen(line) -1)
-			|| (line[ft_strlen(line) - 1] != '\n'
-			&& (size_t) width != ft_strlen(line)))
-			valid = 0;
+		process_size(&height, &width, line, &valid);
 		free(line);
 		line = get_next_line(fd);
 	}
@@ -101,7 +80,7 @@ int	get_map_elements_nb(t_map *map)
 	int		i;
 	int		exit;
 	int		player;
-	
+
 	exit = 0;
 	player = 0;
 	i = 0;
@@ -120,7 +99,7 @@ int	get_map_elements_nb(t_map *map)
 		i++;
 	}
 	if (player != 1 || exit != 1 || map->c_nb < 1)
-		return (0);	
+		return (0);
 	return (1);
 }
 
