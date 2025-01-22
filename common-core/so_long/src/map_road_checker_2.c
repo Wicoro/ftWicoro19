@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:28:55 by norban            #+#    #+#             */
-/*   Updated: 2025/01/20 16:24:54 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/22 13:38:38 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ t_tile	**get_accessible(t_map *map, t_tile *mc_spawn)
 	t_tile	**accessible;
 
 	accessible = malloc(sizeof(t_tile *) * (map->height * map->width) + 1);
+	ft_bzero(accessible, sizeof(t_tile *) * (map->height * map->width) + 1);
 	recursive_access_checker(map, accessible, mc_spawn);
-	add_tile(accessible, 0);
 	return (accessible);
 }

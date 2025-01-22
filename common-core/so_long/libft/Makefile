@@ -6,7 +6,7 @@
 #    By: norban <norban@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 22:07:22 by norban            #+#    #+#              #
-#    Updated: 2025/01/15 17:36:49 by norban           ###   ########.fr        #
+#    Updated: 2025/01/22 17:25:24 by norban           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,17 @@ INC = include
 
 SRC_DIR = src
 OBJ_DIR = obj
+
+DEF_COLOR	=	\033[0;37m
+ORANGE		=	\033[0;33m
+GRAY		=	\033[0;90m
+RED			=	\033[0;91m
+GREEN		=	\033[1;92m
+YELLOW		=	\033[0;93m
+BLUE		=	\033[0;94m
+MAGENTA		=	\033[0;95m
+CYAN		=	\033[1;96m
+WHITE		=	\033[0;97m
 
 SRCS_LIST = is/ft_islower.c \
 			is/ft_isalpha.c \
@@ -75,16 +86,20 @@ NAME = libft.a
 all: $(OBJ_DIR) $(NAME)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-			$(CC) $(CFLAGS) -I $(INC) -c $< -o $@
+			@echo "$(YELLOW) 📦 Compiling $< $(DEF_COLOR)"
+			@$(CC) $(CFLAGS) -I $(INC) -c $< -o $@
 
 $(NAME): $(OBJS)
-		ar -rcs $(NAME) $(OBJS)
+		@ar -rcs $(NAME) $(OBJS)
+		@echo ""
+		@echo "$(BOLD)$(GREEN)		✅ $(NAME) compiled ✅$(DEF_COLOR)"
+		@echo ""
 
 clean:
-		rm -rf $(OBJ_DIR)
+		@rm -rf $(OBJ_DIR)
 
 fclean: clean
-		rm -rf $(NAME)
+		@rm -rf $(NAME)
 
 $(OBJ_DIR):
 		@mkdir -p $(OBJ_DIR)
