@@ -64,11 +64,12 @@ clean:
 			@echo " 🗑 $(YELLOW) Cleaning $(LIBFT) $(DEF_COLOR)"
 			@make clean --no-print-directory -C $(LIBFT)
 			@echo " 🗑 $(YELLOW) Cleaning $(MLX) $(DEF_COLOR)"
-			@make clean --no-print-directory -C $(MLX)
+			@make clean --no-print-directory --silent -C $(MLX)
 
 fclean:		clean
 			@echo " 🗑 $(YELLOW) Cleaning $(NAME) $(DEF_COLOR)"
 			@rm -rf $(OBJ_DIR)
+			@rm -rf $(NAME)
 			@make fclean --no-print-directory -C $(LIBFT)
 			@echo ""
 			@echo "$(GREEN)$(BOLD)		✅ $(NAME) files cleaned ✅$(DEF_COLOR)"
@@ -79,7 +80,7 @@ logo:
 $(MAKE_LIB):
 			@echo "		📚 $(CYAN)$(BOLD) Compiling $(MLX) 📚$(DEF_COLOR)"
 			@echo ""
-			@make --no-print-directory -w -C $(MLX)
+			@make --no-print-directory --silent -C $(MLX)
 			@echo "		📚 $(CYAN)$(BOLD) Compiling $(LIBFT) 📚$(DEF_COLOR)"
 			@echo ""
 			@make --no-print-directory -C $(LIBFT)
