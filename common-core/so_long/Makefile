@@ -4,7 +4,7 @@ NAME		= so_long
 
 INC			= include
 INC_LIBFT	= libft/include
-CFLAGS		= -Wall -Wextra -g
+CFLAGS		= -Wall -Wextra -Werror -g
 MLXFLAGS	= -lXext -lX11 -lm -lz
 
 LIBFT		= libft
@@ -78,22 +78,22 @@ logo:
 			@cat logo.txt
 
 $(MAKE_LIB):
-			@echo "		📚 $(CYAN)$(BOLD) Compiling $(MLX) 📚$(DEF_COLOR)"
+			@echo "		📚$(CYAN)$(BOLD) Compiling $(MLX) 📚$(DEF_COLOR)"
 			@echo ""
 			@make --no-print-directory --silent -C $(MLX)
-			@echo "		📚 $(CYAN)$(BOLD) Compiling $(LIBFT) 📚$(DEF_COLOR)"
 			@echo ""
-			@make --no-print-directory -C $(LIBFT)
+			@echo "		📚$(CYAN)$(BOLD) Compiling $(LIBFT) 📚$(DEF_COLOR)"
+			@echo ""
+			@make --no-print-directory --silent -C $(LIBFT)
+			@echo "		💾$(CYAN)$(BOLD) Compiling $(NAME) $(DEF_COLOR)💾"
+			@echo ""
 
-$(OBJ_DIR)%.o: $(SRC_DIR)%.c test
+$(OBJ_DIR)%.o: $(SRC_DIR)%.c
 			@echo "$(YELLOW)📦 Compiling $< $(DEF_COLOR)"
 			@$(CC) $(CFLAGS) -I $(INC) -I $(INC_LIBFT) -I $(MLX) -c $< -o $@
 
 $(OBJ_DIR):
 			@mkdir -p $(OBJ_DIR)
-
-test:
-			@echo "		💾$(CYAN)$(BOLD) Compiling $(NAME) $(DEF_COLOR)💾"
-			@echo ""
+	
 
 .PHONY:		all clean fclean re

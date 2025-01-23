@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 20:09:17 by norban            #+#    #+#             */
-/*   Updated: 2025/01/20 16:07:18 by norban           ###   ########.fr       */
+/*   Updated: 2025/01/22 19:00:41 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	create_images(t_game *game)
 	game->imgs[7] = create_image(game, "mc_up.xpm", 100, 100);
 	game->imgs[8] = create_image(game, "mc_down.xpm", 100, 100);
 	game->imgs[9] = create_image(game, "mc_left.xpm", 100, 100);
-	game->imgs[10] = create_image(game, "mc_right.xpm", 100, 100);
+	game->imgs[10] = create_image(game, "mc_right.xpm", 100, 1002);
 	game->imgs[11] = create_image(game, "collectible_0.xpm", 100, 100);
 	game->imgs[12] = create_image(game, "collectible_1.xpm", 100, 100);
 	game->imgs[13] = create_image(game, "collectible_2.xpm", 100, 100);
