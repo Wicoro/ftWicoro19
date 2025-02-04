@@ -1,0 +1,93 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers_manager.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/23 17:15:47 by norban            #+#    #+#             */
+/*   Updated: 2025/01/31 14:51:29 by norban           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "philosophers.h"
+
+int	fill_philo(t_list *list, char **av, long time_ms, int i)
+{
+	list->philosophers[i] = malloc(sizeof(t_phil));
+	if (!list->philosophers[i])
+		return (0);
+	list->philosophers[i]->timers = malloc(sizeof(t_timers));
+	if (!list->philosophers)
+		return (0);
+	list->philosophers[i]->timers->die_time = ft_atoi(av[2]);
+	list->philosophers[i]->timers->sleep_time = ft_atoi(av[4]);
+	list->philosophers[i]->timers->eat_time = ft_atoi(av[3]);
+	list->philosophers[i]->eat_nb = 0;
+	list->philosophers[i]->time_start = time_ms;
+	return (1);
+}
+
+t_list	*create_list(char **av, long time_ms)
+{
+	t_list	*list;
+	int		i;
+
+	list = malloc(sizeof(t_list));
+	if (!list)
+		return (NULL);
+	list->philo_nb = ft_atoi(av[1]);
+	list->philosophers = malloc(sizeof(t_phil *) * (list->philo_nb + 1));
+	if (!list->philosophers)
+		return (free(list), NULL);
+	list->philosophers[list->philo_nb] = NULL;
+	i = 0;
+	while (i < list->philo_nb)
+	{
+		if (fill_philo(list, av, time_ms, i) == 0)
+			return (free(list), free(list->philosophers), NULL);
+		i++;
+	}
+	list->eat_nb = -1;
+	if (av[5])
+		list->eat_nb = ft_atoi(av[5]);
+	return (list);
+}
+
+void	create_philosopher(t_list *list, int i)
+{
+	struct timeval	tv;
+	long			time;
+
+	gettimeofday(&tv, NULL);
+	time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+	list->philosophers[i]->id = i + 1;
+	list->philosophers[i]->last_eat = time;
+	list->philosophers[i]->end_status = 0;
+	if (pthread_mutex_init(&list->philosophers[i]->fork, NULL) != 0)
+		return (free_all(list), print_error(3));
+	if (pthread_mutex_init(&list->philosophers[i]->lock_eat_nb, NULL) != 0)
+		return (free_all(list), print_error(3));
+	if (pthread_mutex_init(&list->philosophers[i]->lock_last_eat, NULL) != 0)
+		return (free_all(list), print_error(3));
+	if (pthread_mutex_init(&list->philosophers[i]->lock_end, NULL) != 0)
+		return (free_all(list), print_error(3));
+	if (i != 0)
+		list->philosophers[i]->prev = list->philosophers[i - 1];
+	if (i != list->philo_nb)
+		list->philosophers[i]->next = list->philosophers[i + 1];
+}
+
+void	create_philosophers(t_list *list)
+{
+	int	i;
+
+	i = 0;
+	while (i < list->philo_nb)
+	{
+		create_philosopher(list, i);
+		i++;
+	}
+	list->philosophers[0]->prev = list->philosophers[list->philo_nb - 1];
+	list->philosophers[list->philo_nb - 1]->next = list->philosophers[0];
+}
