@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:37:22 by norban            #+#    #+#             */
-/*   Updated: 2025/02/04 15:39:21 by norban           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:39:21 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ void	end_threads(t_list *list)
 	}
 }
 
-void	wait_end(t_list *list)
+int	wait_end(t_list *list)
 {
 	t_phil			*philosopher;
 	struct timeval	tv;
 	long			time;
+	int				id_end;
 
+	id_end = -1;
 	philosopher = list->philosophers[0];
 	while (eat_all(list) == 0)
 	{
@@ -61,20 +63,21 @@ void	wait_end(t_list *list)
 		if (time - philosopher->last_eat > philosopher->timers->die_time)
 		{
 			pthread_mutex_unlock(&philosopher->lock_last_eat);
-			printf("%ld %d died\n",
-				time - philosopher->time_start, philosopher->id);
+			id_end = philosopher->id;
 			break ;
 		}
 		pthread_mutex_unlock(&philosopher->lock_last_eat);
 		philosopher = philosopher->next;
 		usleep(1000);
 	}
+	return (id_end);
 }
 
 void	create_threads(t_list *list)
 {
 	int			i;
 	pthread_t	*t_id;
+	int			id;
 
 	i = 0;
 	t_id = malloc(sizeof(pthread_t) * list->philo_nb);
@@ -83,7 +86,7 @@ void	create_threads(t_list *list)
 		pthread_create(&t_id[i], NULL, routine, list->philosophers[i]);
 		i++;
 	}
-	wait_end(list);
+	id = wait_end(list);
 	end_threads(list);
 	i = 0;
 	while (i < list->philo_nb)
@@ -91,5 +94,7 @@ void	create_threads(t_list *list)
 		pthread_join(t_id[i], NULL);
 		i++;
 	}
+	if (id != -1)
+		print_log(4, id, list->philosophers[id]->time_start);
 	free(t_id);
 }

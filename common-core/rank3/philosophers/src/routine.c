@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:47:22 by norban            #+#    #+#             */
-/*   Updated: 2025/02/04 15:37:44 by norban           ###   ########.fr       */
+/*   Updated: 2025/02/04 15:56:15 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,16 @@ void	philo_sleep_think(t_phil *philosopher, int i)
 		frag_sleep(philosopher->timers->sleep_time);
 	}
 	if (i == 1)
+	{
 		print_log(THINKING, philosopher->id, philosopher->time_start);
+		frag_sleep(1);
+	}
 }
 
 void	*routine(void *arg)
 {
 	t_phil	*philosopher;
-	
+
 	philosopher = arg;
 	if (philosopher->id % 2 == 0)
 		frag_sleep(philosopher->timers->eat_time - 10);

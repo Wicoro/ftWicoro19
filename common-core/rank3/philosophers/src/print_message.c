@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:19:10 by norban            #+#    #+#             */
-/*   Updated: 2025/01/31 14:02:04 by norban           ###   ########.fr       */
+/*   Updated: 2025/02/05 23:37:59 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,6 @@ void	print_log(int code, int id, long time_start)
 		printf("[%ld] %d is sleeping\n", time_ms - time_start, id);
 	if (code == 3)
 		printf("[%ld] %d has taken a fork\n", time_ms - time_start, id);
+	if (code == 4)
+		printf("%ld %d died\n", time_ms - time_start, id);
 }
