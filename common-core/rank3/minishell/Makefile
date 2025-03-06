@@ -29,7 +29,9 @@ UNDERLINE	=	\033[4m
 
 SRC_LIST	= 	minishell.c \
 				lexer.c \
-				free_utils.c
+				free_utils.c \
+				parser.c \
+				action_tree.c
 
 # BONUS_LIST	=
 

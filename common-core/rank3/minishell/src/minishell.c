@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/02/18 16:39:32 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/06 15:28:34 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ t_minishell	*create_minishell(char **environment)
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (NULL);
-	minishell->tree = malloc(sizeof(t_token));
-	if (!minishell->tree)
-		return (free(minishell), NULL);
-	minishell->tree->data_type = -1;
+	minishell->tree = NULL;
 	minishell->lexer = NULL;
 	(void)environment; 
 	return (minishell);
@@ -54,9 +51,14 @@ int	main(int ac, char **av, char **env)
 		line = readline("maxi-total ⛽ > ");
 		if (ft_strncmp(line, "$?", 2) == 0)
 			printf("%d\n", cmd_result);
-		else
-			lexer(&minishell->lexer, line);
+		else if (lexer(&minishell->lexer, line) == 1)
+		{
+			free(line);
+			printf("malloc error\n");
+		}
 		free(line);
+		if (parse_lexer(minishell) != 1)
+			process_lexer_to_tree(minishell);
 		print_lexer(minishell->lexer);
 	}
 	(void)ac;

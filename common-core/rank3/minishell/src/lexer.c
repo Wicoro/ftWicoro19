@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:38:27 by norban            #+#    #+#             */
-/*   Updated: 2025/03/06 13:44:57 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:05:23 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ int	get_next_sep(char *line)
 	return (i);
 }
 
-void	lexer(t_token **lexer, char *line)
+int	lexer(t_token **lexer, char *line)
 {
 	int	i;
 	int	j;
@@ -94,7 +94,8 @@ void	lexer(t_token **lexer, char *line)
 			i++;
 		j = get_next_sep(line + i);
 		if (create_token(lexer, line + i, j) == 1)
-			printf("lex");
+			return (1);
 		i += j;
 	}
+	return  (0);
 }

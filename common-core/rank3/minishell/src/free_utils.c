@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:36:57 by norban            #+#    #+#             */
-/*   Updated: 2025/03/06 13:24:45 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:08:32 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,5 +26,6 @@ void	free_lexer(t_token **lexer)
 
 void	free_minishell(t_minishell *minishell)
 {
+	free_lexer(&minishell->lexer);
 	free(minishell);
 }

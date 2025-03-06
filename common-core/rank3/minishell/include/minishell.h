@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:27:12 by norban            #+#    #+#             */
-/*   Updated: 2025/03/06 13:24:54 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:20:13 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ typedef struct s_minishell
 }	t_minishell;
 
 void	*parse_line(char *line);
-void	lexer(t_token **lexer, char *line);
+int		lexer(t_token **lexer, char *line);
+int		parse_lexer(t_minishell *minishell);
 void	add_child(t_token *parent, t_token *child);
 void	free_lexer(t_token **lexer);
 void	free_minishell(t_minishell *minishell);
