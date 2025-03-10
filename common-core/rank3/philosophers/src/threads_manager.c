@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:37:22 by norban            #+#    #+#             */
-/*   Updated: 2025/02/05 23:39:21 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/10 15:04:27 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,16 @@ void	create_threads(t_list *list)
 	}
 	id = wait_end(list);
 	end_threads(list);
+	if (id != -1)
+	{
+		usleep(100);
+		print_log(4, id, list->philosophers[id - 1]->time_start);
+	}
 	i = 0;
 	while (i < list->philo_nb)
 	{
 		pthread_join(t_id[i], NULL);
 		i++;
 	}
-	if (id != -1)
-		print_log(4, id, list->philosophers[id]->time_start);
 	free(t_id);
 }

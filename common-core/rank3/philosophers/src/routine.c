@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 16:47:22 by norban            #+#    #+#             */
-/*   Updated: 2025/02/04 15:56:15 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/10 15:03:48 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	philo_eat(t_phil *philosopher)
 
 	gettimeofday(&tv, NULL);
 	time = (tv.tv_sec) * 1000 + (tv.tv_usec) / 1000;
+	pthread_mutex_lock(&philosopher->lock_last_eat);
 	if (end_routine(philosopher) == 0)
 		print_log(EATING, philosopher->id, philosopher->time_start);
-	pthread_mutex_lock(&philosopher->lock_last_eat);
 	philosopher->last_eat = time;
 	pthread_mutex_unlock(&philosopher->lock_last_eat);
 	frag_sleep(philosopher->timers->eat_time);

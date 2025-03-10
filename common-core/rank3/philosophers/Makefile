@@ -3,7 +3,7 @@ CC = cc
 NAME		= philo
 
 INC			= include
-CFLAGS		= -Wall -Wextra -Werror # -g # -fsanitize=address # -fsanitize=thread
+CFLAGS		= -Wall -Wextra -Werror -g  # -fsanitize=address  # -fsanitize=thread
 MAKE_LIB	= make_lib
 
 SRC_DIR		= src/
@@ -44,7 +44,7 @@ $(NAME):	logo $(MAKE_LIB) $(OBJS)
 re:			fclean all
 
 clean:
-			@rm -rf $(NAME)
+			@rm -rf $(OBJ_DIR)
 
 fclean:		clean
 			@echo " 🗑 $(YELLOW) Cleaning $(NAME) $(DEF_COLOR)"
