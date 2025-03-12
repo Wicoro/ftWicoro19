@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/03/06 15:28:34 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/12 15:58:40 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,16 @@ t_minishell	*create_minishell(char **environment)
 	return (minishell);
 }
 
-void	print_lexer(t_token *lexer)
+void	print_lexer(t_token **lexer)
 {
-	while (lexer)
+	t_token *crt;
+	crt = *lexer;
+	while (crt)
 	{
-		printf("%s, %d\n", lexer->str, lexer->data_type);
-		lexer = lexer->right;
+		printf("%s -> ", crt->str);
+		crt = crt->right;
 	}
+	printf("\n");
 }
 
 int	main(int ac, char **av, char **env)
@@ -47,20 +50,38 @@ int	main(int ac, char **av, char **env)
 		//print_error(0);
 	while (1)
 	{
-		free_lexer(&minishell->lexer);
+		free_tree(&minishell->tree);
+		minishell->lexer = NULL;
 		line = readline("maxi-total ⛽ > ");
-		if (ft_strncmp(line, "$?", 2) == 0)
-			printf("%d\n", cmd_result);
-		else if (lexer(&minishell->lexer, line) == 1)
+		if (ft_strlen(line) == 0)
+			free(line);
+		else if (ft_strncmp(line, "exit", 5) == 0)
 		{
 			free(line);
-			printf("malloc error\n");
+			break;
 		}
-		free(line);
-		if (parse_lexer(minishell) != 1)
-			process_lexer_to_tree(minishell);
-		print_lexer(minishell->lexer);
+		else if (ft_strncmp(line, "$?", 2) == 0)
+			printf("%d\n", cmd_result);
+		else
+		{
+			if (lexer(&minishell->lexer, ft_strtrim(line, " ")) == 1)
+			{
+				free(line);
+				free_lexer(&minishell->tree);
+				printf("malloc error\n");
+				exit(1);
+			}
+			else
+			{
+				print_lexer(&minishell->lexer);
+				if (parse_lexer(minishell) != 1)
+					process_lexer_to_tree(minishell);
+			}
+			free(line);
+		}
 	}
+	free_tree(&minishell->tree);
+	free_minishell(minishell);
 	(void)ac;
 	(void)av;
 	return (0);

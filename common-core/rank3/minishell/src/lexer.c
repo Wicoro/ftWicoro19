@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:38:27 by norban            #+#    #+#             */
-/*   Updated: 2025/03/06 14:05:23 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/12 15:59:00 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,16 @@ int	create_token(t_token **lexer, char *src, int len)
 	if (!lex)
 		return (free(s), 1);
 	lex->data_type = WORD;
-	if (ft_strlen(s) == 1)
+	if (ft_strlen(s) == 1 || ft_strlen(s) == 2)
 	{
-		if (s[0] == '<' || s[0] == '>')
+		if (ft_strlen(s) == 1 && (s[0] == '<' || s[0] == '>'))
 			lex->data_type = REDIRECTION;
-		else if (s[0] == '|')
+		else if (ft_strlen(s) == 1 && s[0] == '|')
 			lex->data_type = PIPE;
+		else if (ft_strlen(s) == 2
+			&& ((s[0] == '<' && s[1] == '<')
+			|| (s[0] == '>' && s[1] == '>')))
+			lex->data_type = REDIRECTION;
 	}
 	lex->str = s;
 	add_to_lexer(lexer, lex);
@@ -62,9 +66,13 @@ int	get_next_sep(char *line)
 	char	quote;
 
 	i = 0;
+	if (line[i] && line[i + 1] 
+		&& ((line[i] == '<' && line[i + 1] == '<')
+		|| ((line[i] == '>') && line[i + 1] == '>')))
+		return (2);
 	if (line[i] == '<' || line[i] == '>' || line[i] == '|')
 		return (1);
-	if (!line[i + 1])
+	if (line[i] && !line[i + 1])
 		return (1);
 	if (line[i] == '\'' || line[i] == '"')
 	{
@@ -94,8 +102,9 @@ int	lexer(t_token **lexer, char *line)
 			i++;
 		j = get_next_sep(line + i);
 		if (create_token(lexer, line + i, j) == 1)
-			return (1);
+			return (free(line), 1);
 		i += j;
 	}
+	free(line);
 	return  (0);
 }
