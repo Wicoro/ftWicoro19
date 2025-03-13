@@ -6,12 +6,11 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:53:56 by norban            #+#    #+#             */
-/*   Updated: 2025/03/12 17:03:26 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/13 14:36:45 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
 
 t_token	*get_previous_cmd_start(t_token *sep)
 {
@@ -67,50 +66,49 @@ void	process_lexer_to_tree(t_minishell *minishell)
 	}
 	else if (!minishell->tree)
 		minishell->tree = minishell->lexer;
-	printf("%s | %s\n", minishell->tree->str, minishell->lexer->str);
-	t_token *print;
-	int id = 0;
-	print = minishell->tree;
-	while (print)
-	{
-		if (print->data_type == PIPE)
-			printf("%d : %d -> %s\n", id, print->data_type, print->str);
-		else
-		{
-			tmp = print;
-			printf("%d :", id);
-			while (tmp && tmp->data_type != PIPE)
-			{
-				printf(" -> %s (%d)", tmp->str, tmp->data_type);
-				tmp = tmp->right;
-			}
-			printf("\n");
-			break;
-		}
-		id++;
-		if (print && print->data_type == PIPE)
-		{
-			tmp = print->left;
-			printf("%d :", id);
-			while (tmp && tmp->data_type != PIPE)
-			{
-				printf(" -> %s (%d)", tmp->str, tmp->data_type);
-				tmp = tmp->right;
-			}
-			printf("\n");
-		}
-		if (print->right && print->right->data_type != PIPE)
-		{
-			tmp = print->right;
-			printf("%d :", id);
-			while (tmp)
-			{
-				printf(" -> %s (%d)", tmp->str, tmp->data_type);
-				tmp = tmp->right;
-			}
-			printf("\n");
-			break;
-		}
-		print = print->right;
-	}
+	// t_token *print;
+	// int id = 0;
+	// print = minishell->tree;
+	// while (print)
+	// {
+	// 	if (print->data_type == PIPE)
+	// 		printf("%d : %d -> %s\n", id, print->data_type, print->str);
+	// 	else
+	// 	{
+	// 		tmp = print;
+	// 		printf("%d :", id);
+	// 		while (tmp && tmp->data_type != PIPE)
+	// 		{
+	// 			printf(" -> %s (%d)", tmp->str, tmp->data_type);
+	// 			tmp = tmp->right;
+	// 		}
+	// 		printf("\n");
+	// 		break;
+	// 	}
+	// 	id++;
+	// 	if (print && print->data_type == PIPE)
+	// 	{
+	// 		tmp = print->left;
+	// 		printf("%d :", id);
+	// 		while (tmp && tmp->data_type != PIPE)
+	// 		{
+	// 			printf(" -> %s (%d)", tmp->str, tmp->data_type);
+	// 			tmp = tmp->right;
+	// 		}
+	// 		printf("\n");
+	// 	}
+	// 	if (print->right && print->right->data_type != PIPE)
+	// 	{
+	// 		tmp = print->right;
+	// 		printf("%d :", id);
+	// 		while (tmp)
+	// 		{
+	// 			printf(" -> %s (%d)", tmp->str, tmp->data_type);
+	// 			tmp = tmp->right;
+	// 		}
+	// 		printf("\n");
+	// 		break;
+	// 	}
+	// 	print = print->right;
+	// }
 }

@@ -6,22 +6,61 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/03/12 15:58:40 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/13 14:40:58 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+t_env	*extract_env(char *str)
+{
+	t_env	*env;
+
+	env = malloc(sizeof(t_env));
+	if (!env)
+		return (NULL);
+	env->next = NULL;
+	env->prev = NULL;
+	env->str = str;
+	return (env);
+}
+
+int	env_to_llist(char **environment, t_minishell *minishell)
+{
+	int		i;
+	t_env	*crt;
+	if (!environment || !environment[0])
+		return (0);
+	i = 0;
+	minishell->env_start = extract_env(environment[i]);
+	if (!minishell->env_start)
+		return (1);
+	i++;
+	crt = minishell->env_start;
+	while (environment[i])
+	{
+		crt->next = extract_env(environment[i]);
+		if (!crt->next)
+			return (1);
+		i++;
+		crt = crt->next;
+	}
+	return (0);
+}
+
 t_minishell	*create_minishell(char **environment)
 {
 	t_minishell	*minishell;
+	int			i;
 
+	i = 0;
 	minishell = malloc(sizeof(t_minishell));
 	if (!minishell)
 		return (NULL);
 	minishell->tree = NULL;
 	minishell->lexer = NULL;
-	(void)environment; 
+	if (env_to_llist(environment, minishell) == 1)
+		return (free(minishell), NULL);
 	return (minishell);
 }
 
@@ -48,7 +87,7 @@ int	main(int ac, char **av, char **env)
 	if (!minishell)
 		printf("error\n");
 		//print_error(0);
-	while (1)
+	while (minishell)
 	{
 		free_tree(&minishell->tree);
 		minishell->lexer = NULL;
