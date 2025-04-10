@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:38:27 by norban            #+#    #+#             */
-/*   Updated: 2025/03/28 14:59:14 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/10 14:34:19 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,13 @@ int	get_next_sep(char *line)
 
 int	lexer(t_token **lexer, char *line)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	char	*tmp_line;
 	
+	tmp_line = ft_strtrim(line, " ");
+	free(line);
+	line = tmp_line;
 	i = 0;
 	if (!line)
 		return (1);
