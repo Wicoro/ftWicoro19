@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:38:27 by norban            #+#    #+#             */
-/*   Updated: 2025/03/12 15:59:00 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/28 14:59:14 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,24 @@ int	get_next_sep(char *line)
 		return (2);
 	if (line[i] == '<' || line[i] == '>' || line[i] == '|')
 		return (1);
-	if (line[i] && !line[i + 1])
-		return (1);
-	if (line[i] == '\'' || line[i] == '"')
-	{
-		quote = line[i];
-		i++;
-		while (line[i] && line[i] != quote && line[i -1] != '\\')
-			i++;
-		return (i + 1);
-	}
-	i++;
 	while (line[i] && line[i] != '<' && line[i] != '>'
-		&& line[i] != ' ' && line[i] != '|'
-		&& line[i] != '"' && line[i] != '\'')
+		&& line[i] != ' ' && line[i] != '|')
+	{
+		if ((line[i] == '\'' || line[i] == '"') && !line[i + 1])
+			return (-1);
+		if (line[i] && !line[i + 1])
+			return (i + 1);
+		if (line[i] == '\'' || line[i] == '"')
+		{
+			quote = line[i];
+			i++;
+			while (line[i] && line[i] != quote && line[i -1] != '\\')
+				i++;
+			if (!line[i])
+				return (-1);
+		}
 		i++;
+	}
 	return (i);
 }
 
@@ -96,15 +99,18 @@ int	lexer(t_token **lexer, char *line)
 	int	j;
 	
 	i = 0;
+	if (!line)
+		return (1);
 	while (line[i])
 	{
 		while (line[i] && line[i] == ' ')
 			i++;
 		j = get_next_sep(line + i);
+		if (j == -1)
+			return (printf("quote not ended properly\n"), 1);
 		if (create_token(lexer, line + i, j) == 1)
-			return (free(line), 1);
+			return (printf("malloc error\n"), free(line), 1);
 		i += j;
 	}
-	free(line);
 	return  (0);
 }

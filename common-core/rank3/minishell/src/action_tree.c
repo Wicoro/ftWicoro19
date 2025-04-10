@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:53:56 by norban            #+#    #+#             */
-/*   Updated: 2025/03/13 14:36:45 by norban           ###   ########.fr       */
+/*   Updated: 2025/03/25 14:26:57 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ t_token	*get_previous_cmd_start(t_token *sep)
 	return (sep);
 }
 
-int	split_lexer(t_token *sep, t_minishell **minishell)
+int	split_lexer(t_token *sep, t_datashell **data)
 {
 	t_token	*crt;
 	
-	if (!(*minishell)->tree)
+	if (!(*data)->tree)
 	{
 		crt = sep;
-		(*minishell)->tree = crt;
+		(*data)->tree = crt;
 	}
 	else
 	{
-		crt = (*minishell)->tree;
+		crt = (*data)->tree;
 		while (crt->right)
 			crt = crt->right;
 		crt->right = sep;
@@ -42,30 +42,30 @@ int	split_lexer(t_token *sep, t_minishell **minishell)
 	return (0);
 }
 
-void	process_lexer_to_tree(t_minishell *minishell)
+void	process_lexer_to_tree(t_datashell *data)
 {
 	t_token *sep;
 	t_token *tmp;
 
-	sep = minishell->lexer;
+	sep = data->lexer;
 	while (sep && sep->right)
 	{
 		tmp = sep->right;
 		if (sep->data_type == PIPE)
-			split_lexer(sep, &minishell);
+			split_lexer(sep, &data);
 		sep = tmp;
 	}
 	while (sep->left && sep->left->data_type != PIPE)
 		sep = sep->left;
-	if (minishell->tree && minishell->tree->data_type == PIPE)
+	if (data->tree && data->tree->data_type == PIPE)
 	{
-		tmp = minishell->tree;
+		tmp = data->tree;
 		while (tmp->right)
 			tmp = tmp->right;
 		tmp->right = sep;
 	}
-	else if (!minishell->tree)
-		minishell->tree = minishell->lexer;
+	else if (!data->tree)
+		data->tree = data->lexer;
 	// t_token *print;
 	// int id = 0;
 	// print = minishell->tree;
@@ -103,6 +103,36 @@ void	process_lexer_to_tree(t_minishell *minishell)
 	// 		printf("%d :", id);
 	// 		while (tmp)
 	// 		{
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
 	// 			printf(" -> %s (%d)", tmp->str, tmp->data_type);
 	// 			tmp = tmp->right;
 	// 		}

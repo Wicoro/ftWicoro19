@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:36:57 by norban            #+#    #+#             */
-/*   Updated: 2025/03/12 15:23:03 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/10 13:06:36 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,44 +24,37 @@ void	free_lexer(t_token **lexer)
 	*lexer = NULL;
 }
 
-void	free_tree(t_token **tree)
+void	free_cmds(t_datashell *data)
 {
-	t_token *crt;
-	t_token *crt2;
-	t_token	*left;
-
-	if (!*tree)
-		return ;
-	crt = *tree;
-	while (crt->data_type == PIPE)
+	t_cmd	*crt;
+	t_cmd	*next;
+	
+	crt = data->cmd_list;
+	while (crt)
 	{
-		left = crt->left;
-		while (left->right && left->right->data_type != PIPE)
-		{
-			left = left->right;
-			free(left->left->str);
-			free(left->left);
-		}
-		free(left->str);
-		free(left);
-		crt2 = crt;
-		crt = crt->right;
-		free(crt2->str);
-		free(crt2);
+		next = crt->next;
+		free(crt);
+		crt = next;
 	}
-	while (crt->right)
-	{
-		crt = crt->right;
-		free(crt->left->str);
-		free(crt->left);
-	}
-	free(crt->str);
-	free(crt);
-	*tree = NULL;
 }
 
-void	free_minishell(t_minishell *minishell)
+void	free_env(t_datashell *data)
 {
-	free_lexer(&minishell->lexer);
-	free(minishell);
+	t_env	*crt;
+	t_env	*next;
+	
+	crt = data->env_start;
+	while (crt)
+	{
+		next = crt->next;
+		free(crt);
+		crt = next;
+	}
+}
+
+void	free_minishell(t_datashell *data)
+{
+	free_lexer(&data->lexer);
+	free_env(data);
+	free(data);
 }

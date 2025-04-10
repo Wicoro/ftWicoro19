@@ -6,91 +6,80 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/03/13 14:40:58 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/10 13:31:20 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env	*extract_env(char *str)
+t_datashell	*create_minishell(char **environment)
 {
-	t_env	*env;
-
-	env = malloc(sizeof(t_env));
-	if (!env)
-		return (NULL);
-	env->next = NULL;
-	env->prev = NULL;
-	env->str = str;
-	return (env);
-}
-
-int	env_to_llist(char **environment, t_minishell *minishell)
-{
-	int		i;
-	t_env	*crt;
-	if (!environment || !environment[0])
-		return (0);
-	i = 0;
-	minishell->env_start = extract_env(environment[i]);
-	if (!minishell->env_start)
-		return (1);
-	i++;
-	crt = minishell->env_start;
-	while (environment[i])
-	{
-		crt->next = extract_env(environment[i]);
-		if (!crt->next)
-			return (1);
-		i++;
-		crt = crt->next;
-	}
-	return (0);
-}
-
-t_minishell	*create_minishell(char **environment)
-{
-	t_minishell	*minishell;
+	t_datashell	*data;
 	int			i;
 
 	i = 0;
-	minishell = malloc(sizeof(t_minishell));
-	if (!minishell)
+	data = malloc(sizeof(t_datashell));
+	if (!data)
 		return (NULL);
-	minishell->tree = NULL;
-	minishell->lexer = NULL;
-	if (env_to_llist(environment, minishell) == 1)
-		return (free(minishell), NULL);
-	return (minishell);
+	data->cmd_list = NULL;
+	data->lexer = NULL;
+	if (env_to_llist(environment, data) == 1)
+		return (free(data), NULL);
+	return (data);
 }
 
 void	print_lexer(t_token **lexer)
 {
 	t_token *crt;
 	crt = *lexer;
+	printf("\nLexer : \n");
 	while (crt)
 	{
 		printf("%s -> ", crt->str);
 		crt = crt->right;
 	}
 	printf("\n");
+	printf("\n");
+}
+
+void	print_cmds(t_cmd *cmd)
+{
+	t_cmd	*crt;
+	int		i;
+	
+	crt = cmd;
+	printf("Cmd llist :\n");
+	while (crt)
+	{
+		printf("String command : %s\nRedirection arrays\n", crt->str);
+		i = 0;
+		while (crt->red_id[i] != 0)
+		{
+			printf("red ID : %d -> red file : %s\n", crt->red_id[i], crt->red_file[i]);
+			i++;
+		}
+		if (i == 0)
+			printf("no redirection\n");
+		printf("\n");
+		crt = crt->next;
+	}
 }
 
 int	main(int ac, char **av, char **env)
 {
 	char		*line;
-	t_minishell	*minishell;
+	t_datashell	*data;
 	int			cmd_result;
 
 	cmd_result = 0;
-	minishell = create_minishell(env);
-	if (!minishell)
+	data = create_minishell(env);
+	if (!data)
 		printf("error\n");
 		//print_error(0);
-	while (minishell)
+	while (data)
 	{
-		free_tree(&minishell->tree);
-		minishell->lexer = NULL;
+		free_lexer(&data->lexer);
+		data->lexer = NULL;
 		line = readline("maxi-total ⛽ > ");
 		if (ft_strlen(line) == 0)
 			free(line);
@@ -103,24 +92,27 @@ int	main(int ac, char **av, char **env)
 			printf("%d\n", cmd_result);
 		else
 		{
-			if (lexer(&minishell->lexer, ft_strtrim(line, " ")) == 1)
+			if (lexer(&data->lexer, line))
 			{
 				free(line);
-				free_lexer(&minishell->tree);
-				printf("malloc error\n");
+				free_lexer(&data->lexer);
 				exit(1);
 			}
 			else
 			{
-				print_lexer(&minishell->lexer);
-				if (parse_lexer(minishell) != 1)
-					process_lexer_to_tree(minishell);
+				expander(data->lexer, data->env_start);
+				if (parse_lexer(data->lexer) != 1)
+				{
+					lexer_to_cmds(data);
+					print_lexer(&data->lexer);
+					print_cmds(data->cmd_list);
+				}
 			}
 			free(line);
 		}
 	}
-	free_tree(&minishell->tree);
-	free_minishell(minishell);
+	free_lexer(&data->lexer);
+	free_minishell(data);
 	(void)ac;
 	(void)av;
 	return (0);

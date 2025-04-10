@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:27:12 by norban            #+#    #+#             */
-/*   Updated: 2025/03/07 15:15:44 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/10 13:19:50 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # define WORD 0
 # define PIPE 1
 # define REDIRECTION 2
+# define COMMAND 3
 
 # define RED_IN 0
 # define RED_OUT 1
@@ -37,6 +38,14 @@ typedef struct s_token
 	struct s_token	*right;
 }	t_token;
 
+typedef struct s_cmd
+{
+	char			*str;
+	int				*red_id;
+	char			**red_file;
+	struct s_cmd	*next;
+}	t_cmd;
+
 typedef struct s_env
 {
 	char			*str;
@@ -44,23 +53,27 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_minishell
+typedef struct s_datashell
 {
 	t_env	*env_start;
-	t_token	*tree;
 	t_token	*lexer;
-}	t_minishell;
+	t_cmd	*cmd_list;
+}	t_datashell;
 
-//lexer
+//utils
+int		env_to_llist(char **environment, t_datashell *data);
+
+//lexing + parsing
 int		lexer(t_token **lexer, char *line);
-int		parse_lexer(t_minishell *minishell);
-
-//tree
-void	process_lexer_to_tree(t_minishell *minishell);
+int		parse_lexer(t_token *ref_node);
+int		expander(t_token *lexer, t_env *env_start);
+char	*concat_cmd_str(t_token *node);
+int		lexer_to_cmds(t_datashell *data);
 
 //free
 void	free_lexer(t_token **lexer);
-void	free_tree(t_token **tree);
-void	free_minishell(t_minishell *minishell);
+void	free_minishell(t_datashell *data);
+void	free_cmds(t_datashell *data);
+
 
 #endif

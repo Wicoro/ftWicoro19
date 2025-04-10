@@ -6,17 +6,17 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:58:05 by norban            #+#    #+#             */
-/*   Updated: 2025/03/07 15:33:06 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/10 13:36:59 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	parse_lexer(t_minishell *minishell)
+int	parse_lexer(t_token *ref_node)
 {
 	t_token *crt;
 	
-	crt = minishell->lexer;
+	crt = ref_node;
 	while (crt->right)
 	{
 		if ((crt->data_type == REDIRECTION
@@ -24,16 +24,16 @@ int	parse_lexer(t_minishell *minishell)
 			|| (crt->data_type == PIPE && crt->right->data_type == PIPE))
 		{
 			printf("parse error\n");
-			free_lexer(&minishell->lexer);
+			free_lexer(&ref_node);
 			return (1);
 		}
 		crt = crt->right;
 	}
-	if (minishell->lexer->data_type == PIPE || crt->data_type == PIPE
+	if (ref_node->data_type == PIPE || crt->data_type == PIPE
 		|| crt->data_type == REDIRECTION)
 	{
 		printf("parse error\n");
-		free_lexer(&minishell->lexer);
+		free_lexer(&ref_node);
 		return (1);
 	}
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:25:26 by norban            #+#    #+#             */
-/*   Updated: 2025/04/02 16:30:30 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/02 17:24:07 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,11 @@ int	add_env(char *new_env_str, t_datashell *data)
 
 int	remove_env(t_env *env)
 {
-	env->prev->next = env->next;
-	env->next->prev = env->prev;
+	if (env->prev)
+		env->prev->next = env->next;
+	if (env->next)
+		env->next->prev = env->prev;
 	free(env);
 	env = NULL;
+	return (0);
 }

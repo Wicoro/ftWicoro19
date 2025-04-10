@@ -31,7 +31,9 @@ SRC_LIST	= 	minishell.c \
 				lexer.c \
 				free_utils.c \
 				parser.c \
-				action_tree.c
+				var_expander.c \
+				env_utils.c \
+				lexer_to_cmds.c \
 
 # BONUS_LIST	=
 
