@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 14:24:08 by norban            #+#    #+#             */
-/*   Updated: 2025/01/31 17:26:42 by norban           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:40:20 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,19 @@ char	*test_path(char **split_cmd, char **split_env)
 	command_pathed = ft_strjoin(split_env[0], "/");
 	command = ft_strjoin(command_pathed, split_cmd[0]);
 	j = 0;
-	while (split_env[j] && access(command, F_OK) != 0)
+	while (split_env[j] && access(command, X_OK) != 0)
 	{
 		j++;
 		free(command_pathed);
+		command_pathed = NULL;
 		free(command);
+		if (!split_env[j])
+			break ;
 		command_pathed = ft_strjoin(split_env[j], "/");
 		command = ft_strjoin(command_pathed, split_cmd[0]);
 	}
+	if (!split_env[j])
+		command = NULL;
 	free(command_pathed);
 	return (command);
 }
@@ -63,7 +68,7 @@ int	is_args_valid(int ac, char **av)
 		return (print_error(0), 0);
 	if (access(av[1], R_OK) != 0)
 		return (print_error(1), 0);
-	fd = open(av[4], O_WRONLY);
+	fd = open(av[4], O_TRUNC | O_CREAT | O_RDWR, 0644644);
 	if (fd != -1 && access(av[4], W_OK) != 0)
 		return (print_error(1), 0);
 	close(fd);

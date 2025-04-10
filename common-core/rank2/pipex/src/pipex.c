@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:26:27 by norban            #+#    #+#             */
-/*   Updated: 2025/01/31 17:27:02 by norban           ###   ########.fr       */
+/*   Updated: 2025/02/13 16:28:57 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,9 @@ void	exec(char *av, char **env)
 
 	shell_command = get_command(av, env);
 	shell_command_args = ft_split(av, ' ');
-	if (execve(shell_command, shell_command_args, env) == -1)
+	if (shell_command)
+		execve(shell_command, shell_command_args, env);
+	else
 	{
 		free(shell_command);
 		free_split(shell_command_args);
@@ -31,7 +33,7 @@ void	process_parent(int *pipe_fd, char **av, char **env)
 {
 	int	fd;
 
-	fd = open(av[4], O_TRUNC | O_CREAT | O_RDWR, 0644644);
+	fd = open(av[4], O_WRONLY | O_TRUNC);
 	if (fd == -1)
 		print_error(3);
 	dup2(fd, STD_OUT);
