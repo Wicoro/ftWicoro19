@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:27:12 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 16:19:09 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:40:30 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,5 +79,8 @@ t_env	*get_env(char *env_name, t_env *env_start);
 int		remove_env(t_env *env);
 int		add_env(char *new_env_str, t_datashell *data);
 int		env_to_llist(char **environment, t_datashell *data);
+
+//utils
+void	signal_handler(void);
 
 #endif

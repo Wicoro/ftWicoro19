@@ -34,6 +34,7 @@ SRC_LIST	= 	minishell.c \
 				var_expander.c \
 				env_utils.c \
 				lexer_to_cmds.c \
+				signal_handler.c
 
 # BONUS_LIST	=
 
