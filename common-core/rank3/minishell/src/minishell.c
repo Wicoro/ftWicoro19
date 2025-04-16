@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/04/10 13:31:20 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:22:34 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,65 @@ void	print_cmds(t_cmd *cmd)
 	}
 }
 
+void	sigint_handler(int sig)
+{
+	(void)sig;
+
+	printf("\n");
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	sigquit_handler(int sig)
+{
+	(void)sig;
+}
+
+void disable_ctrl_backslash(void)
+{
+	struct termios term;
+
+	if (tcgetattr(STDIN_FILENO, &term) == -1)
+	{
+		perror("tcgetattr");
+		exit(EXIT_FAILURE);
+	}
+	term.c_cc[VQUIT] = _POSIX_VDISABLE;
+	if (tcsetattr(STDIN_FILENO, TCSANOW, &term) == -1)
+	{
+		perror("tcsetattr");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void signal_handler()
+{
+	struct sigaction sa_sigint;
+	struct sigaction sa_sigquit;
+
+    sa_sigint.sa_handler = sigint_handler;
+    sigemptyset(&sa_sigint.sa_mask);
+    sigaddset(&sa_sigint.sa_mask, SIGINT);
+    sa_sigint.sa_flags = 0;
+	
+    sa_sigquit.sa_handler = sigquit_handler;
+    sigemptyset(&sa_sigquit.sa_mask);
+    sigaddset(&sa_sigquit.sa_mask, SIGQUIT);
+    sa_sigquit.sa_flags = 0;
+	if (sigaction(SIGINT, &sa_sigint, NULL) == -1)
+    {
+        perror("sigaction failed");
+        exit(1);
+    }
+	if (sigaction(SIGQUIT, &sa_sigquit, NULL) == -1)
+    {
+        perror("sigaction failed");
+        exit(1);
+    }
+	disable_ctrl_backslash();
+}
+
 int	main(int ac, char **av, char **env)
 {
 	char		*line;
@@ -72,6 +131,7 @@ int	main(int ac, char **av, char **env)
 	int			cmd_result;
 
 	cmd_result = 0;
+	signal_handler();
 	data = create_minishell(env);
 	if (!data)
 		printf("error\n");
@@ -81,18 +141,19 @@ int	main(int ac, char **av, char **env)
 		free_lexer(&data->lexer);
 		data->lexer = NULL;
 		line = readline("maxi-total ⛽ > ");
-		if (ft_strlen(line) == 0)
+		if (line && ft_strlen(line) == 0)
 			free(line);
-		else if (ft_strncmp(line, "exit", 5) == 0)
+		else if (!line || ft_strncmp(line, "exit", 5) == 0)
 		{
 			free(line);
-			break;
+			free_minishell(data);
+			data = NULL;
 		}
 		else if (ft_strncmp(line, "$?", 2) == 0)
 			printf("%d\n", cmd_result);
 		else
 		{
-			if (lexer(&data->lexer, line))
+			if (lexer(&data->lexer, &line))
 			{
 				free(line);
 				free_lexer(&data->lexer);
@@ -111,7 +172,6 @@ int	main(int ac, char **av, char **env)
 			free(line);
 		}
 	}
-	free_lexer(&data->lexer);
 	free_minishell(data);
 	(void)ac;
 	(void)av;

@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:36:57 by norban            #+#    #+#             */
-/*   Updated: 2025/04/10 13:06:36 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 14:54:34 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,16 @@ void	free_lexer(t_token **lexer)
 	while (*lexer && (*lexer)->right)
 	{
 		*lexer = (*lexer)->right;
+		if ((*lexer)->left->str)
+			free((*lexer)->left->str);
 		free((*lexer)->left);
 	}
 	if (*lexer)
+	{
+		if ((*lexer)->str)
+			free((*lexer)->str);
 		free(*lexer);
+	}
 	*lexer = NULL;
 }
 
@@ -33,6 +39,9 @@ void	free_cmds(t_datashell *data)
 	while (crt)
 	{
 		next = crt->next;
+		free(crt->red_id);
+		free_split(crt->red_file);
+		free(crt->str);
 		free(crt);
 		crt = next;
 	}
@@ -54,7 +63,12 @@ void	free_env(t_datashell *data)
 
 void	free_minishell(t_datashell *data)
 {
-	free_lexer(&data->lexer);
-	free_env(data);
-	free(data);
+	if (data)
+	{
+		free_cmds(data);
+		free_lexer(&data->lexer);
+		free_env(data);
+		free(data);
+		data = NULL;
+	}
 }

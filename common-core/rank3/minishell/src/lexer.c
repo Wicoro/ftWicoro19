@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:38:27 by norban            #+#    #+#             */
-/*   Updated: 2025/04/10 14:34:19 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:08:22 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,27 +93,27 @@ int	get_next_sep(char *line)
 	return (i);
 }
 
-int	lexer(t_token **lexer, char *line)
+int	lexer(t_token **lexer, char **line)
 {
 	int		i;
 	int		j;
 	char	*tmp_line;
 	
-	tmp_line = ft_strtrim(line, " ");
-	free(line);
-	line = tmp_line;
+	tmp_line = ft_strtrim(*line, " ");
+	free(*line);
+	*line = tmp_line;
 	i = 0;
-	if (!line)
+	if (!*line)
 		return (1);
-	while (line[i])
+	while (line[0][i])
 	{
-		while (line[i] && line[i] == ' ')
+		while (line[0][i] && line[0][i] == ' ')
 			i++;
-		j = get_next_sep(line + i);
+		j = get_next_sep(*line + i);
 		if (j == -1)
 			return (printf("quote not ended properly\n"), 1);
-		if (create_token(lexer, line + i, j) == 1)
-			return (printf("malloc error\n"), free(line), 1);
+		if (create_token(lexer, *line + i, j) == 1)
+			return (printf("malloc error\n"), free(*line), 1);
 		i += j;
 	}
 	return  (0);

@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:43:26 by norban            #+#    #+#             */
-/*   Updated: 2025/04/02 15:35:44 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:15:35 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int	expander(t_token *lexer, t_env *env_start)
 	char	*new_str;
 
 	crt = lexer;
+	i = 0;
 	while (crt && crt->str[i])
 	{
 		i = 0;

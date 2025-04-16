@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 13:58:05 by norban            #+#    #+#             */
-/*   Updated: 2025/04/10 13:36:59 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:14:03 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	parse_lexer(t_token *ref_node)
 			|| (crt->data_type == PIPE && crt->right->data_type == PIPE))
 		{
 			printf("parse error\n");
-			free_lexer(&ref_node);
+			//free_lexer(&ref_node);
 			return (1);
 		}
 		crt = crt->right;
@@ -33,7 +33,7 @@ int	parse_lexer(t_token *ref_node)
 		|| crt->data_type == REDIRECTION)
 	{
 		printf("parse error\n");
-		free_lexer(&ref_node);
+		//free_lexer(&ref_node);
 		return (1);
 	}
 	return (0);

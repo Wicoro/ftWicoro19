@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:27:12 by norban            #+#    #+#             */
-/*   Updated: 2025/04/10 13:19:50 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:19:09 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <stdio.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+# include <termios.h>
 
 # define STD_IN 0
 # define STD_OUT 1
@@ -60,11 +62,8 @@ typedef struct s_datashell
 	t_cmd	*cmd_list;
 }	t_datashell;
 
-//utils
-int		env_to_llist(char **environment, t_datashell *data);
-
 //lexing + parsing
-int		lexer(t_token **lexer, char *line);
+int		lexer(t_token **lexer, char **line);
 int		parse_lexer(t_token *ref_node);
 int		expander(t_token *lexer, t_env *env_start);
 char	*concat_cmd_str(t_token *node);
@@ -75,5 +74,10 @@ void	free_lexer(t_token **lexer);
 void	free_minishell(t_datashell *data);
 void	free_cmds(t_datashell *data);
 
+//env
+t_env	*get_env(char *env_name, t_env *env_start);
+int		remove_env(t_env *env);
+int		add_env(char *new_env_str, t_datashell *data);
+int		env_to_llist(char **environment, t_datashell *data);
 
 #endif

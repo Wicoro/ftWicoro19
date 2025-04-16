@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:25:26 by norban            #+#    #+#             */
-/*   Updated: 2025/04/02 17:24:07 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:27:58 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,18 @@ int	remove_env(t_env *env)
 	free(env);
 	env = NULL;
 	return (0);
+}
+
+t_env	*get_env(char *env_name, t_env *env_start)
+{
+	t_env	*crt;
+	
+	crt = env_start;
+	while (crt)
+	{
+		if (ft_strncmp(env_name, crt->str, ft_strlen(env_name)) == 0)
+			return (crt);
+		crt = crt->next;
+	}
+	return (NULL);
 }
