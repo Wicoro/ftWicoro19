@@ -34,7 +34,7 @@ SRC_LIST	= 	minishell.c \
 				parsing/var_expander.c \
 				utils/env_utils.c \
 				utils/signal_handler.c \
-				utis/free_utils.c
+				utils/free_utils.c
 
 # BONUS_LIST	=
 
@@ -83,6 +83,7 @@ $(MAKE_LIB):
 
 $(OBJ_DIR)%.o: $(SRC_DIR)%.c
 			@echo "$(YELLOW)📦 Compiling $< $(DEF_COLOR)"
+			@mkdir -p $(dir $@)
 			@$(CC) $(CFLAGS) -I $(INC) -I $(INC_LIBFT) -c $< -o $@
 
 $(OBJ_DIR):
