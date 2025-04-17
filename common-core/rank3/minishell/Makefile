@@ -28,13 +28,13 @@ BOLD		=	\033[1m
 UNDERLINE	=	\033[4m
 
 SRC_LIST	= 	minishell.c \
-				lexer.c \
-				free_utils.c \
-				parser.c \
-				var_expander.c \
-				env_utils.c \
-				lexer_to_cmds.c \
-				signal_handler.c
+				parsing/lexer.c \
+				parsing/lexer_to_cmds.c \
+				parsing/parser.c \
+				parsing/var_expander.c \
+				utils/env_utils.c \
+				utils/signal_handler.c \
+				utis/free_utils.c
 
 # BONUS_LIST	=
 

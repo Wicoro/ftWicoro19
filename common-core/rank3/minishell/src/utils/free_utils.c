@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 16:36:57 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 14:54:34 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/17 15:31:17 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ void	free_cmds(t_datashell *data)
 	crt = data->cmd_list;
 	while (crt)
 	{
-		next = crt->next;
+		if (crt->next)
+			next = crt->next;
+		else
+			next = NULL;
 		free(crt->red_id);
 		free_split(crt->red_file);
 		free(crt->str);

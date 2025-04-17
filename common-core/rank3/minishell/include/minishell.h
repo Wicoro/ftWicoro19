@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:27:12 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 16:40:30 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/17 15:27:08 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@
 
 # define RED_IN 0
 # define RED_OUT 1
+
+# define HISTORY_SIZE 100
 
 typedef struct s_token
 {
@@ -57,9 +59,9 @@ typedef struct s_env
 
 typedef struct s_datashell
 {
-	t_env	*env_start;
-	t_token	*lexer;
-	t_cmd	*cmd_list;
+	t_env		*env_start;
+	t_token		*lexer;
+	t_cmd		*cmd_list;
 }	t_datashell;
 
 //lexing + parsing
@@ -73,6 +75,7 @@ int		lexer_to_cmds(t_datashell *data);
 void	free_lexer(t_token **lexer);
 void	free_minishell(t_datashell *data);
 void	free_cmds(t_datashell *data);
+void	free_env(t_datashell *data);
 
 //env
 t_env	*get_env(char *env_name, t_env *env_start);

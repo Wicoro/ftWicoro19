@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 16:39:05 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/17 15:33:21 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ int	main(int ac, char **av, char **env)
 					print_cmds(data->cmd_list);
 				}
 			}
+			add_history(line);
 			free(line);
 		}
 	}
