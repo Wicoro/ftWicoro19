@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:19:10 by norban            #+#    #+#             */
-/*   Updated: 2025/02/05 23:37:59 by norban           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:45:44 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,11 @@
 void	print_error(int error_code)
 {
 	if (error_code == 0)
-		printf("Invalid args numbers : error code 0");
+		printf("Invalid args numbers : error code 0\n");
 	if (error_code == 1)
-		printf("Invalid args : error code 1");
+		printf("Invalid args : error code 1\n");
+	if (error_code == 2)
+		printf("Invalid args (check for negative input): error code 2\n");
 }
 
 void	print_log(int code, int id, long time_start)
@@ -36,5 +38,8 @@ void	print_log(int code, int id, long time_start)
 	if (code == 3)
 		printf("[%ld] %d has taken a fork\n", time_ms - time_start, id);
 	if (code == 4)
+	{
+		usleep(100);
 		printf("%ld %d died\n", time_ms - time_start, id);
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 17:15:47 by norban            #+#    #+#             */
-/*   Updated: 2025/01/31 14:51:29 by norban           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:39:35 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	fill_philo(t_list *list, char **av, long time_ms, int i)
 	list->philosophers[i]->timers->die_time = ft_atoi(av[2]);
 	list->philosophers[i]->timers->sleep_time = ft_atoi(av[4]);
 	list->philosophers[i]->timers->eat_time = ft_atoi(av[3]);
+	if (ft_atoi(av[2]) <= 0 || ft_atoi(av[3]) <= 0 || ft_atoi(av[4]) <= 0)
+		return (print_error(2), 0);
 	list->philosophers[i]->eat_nb = 0;
 	list->philosophers[i]->time_start = time_ms;
 	return (1);
@@ -37,19 +39,22 @@ t_list	*create_list(char **av, long time_ms)
 	if (!list)
 		return (NULL);
 	list->philo_nb = ft_atoi(av[1]);
+	if (list->philo_nb <= 0)
+		return (free(list), print_error(2), NULL);
 	list->philosophers = malloc(sizeof(t_phil *) * (list->philo_nb + 1));
 	if (!list->philosophers)
-		return (free(list), NULL);
+		return (free(list), print_error(2), NULL);
 	list->philosophers[list->philo_nb] = NULL;
-	i = 0;
-	while (i < list->philo_nb)
+	i = -1;
+	while (++i < list->philo_nb)
 	{
 		if (fill_philo(list, av, time_ms, i) == 0)
-			return (free(list), free(list->philosophers), NULL);
-		i++;
+			return (free(list->philosophers[i]->timers),
+				free(list->philosophers[i]),
+				free(list->philosophers), free(list), NULL);
 	}
 	list->eat_nb = -1;
-	if (av[5])
+	if (av[5] && ft_atoi(av[5]) > 0)
 		list->eat_nb = ft_atoi(av[5]);
 	return (list);
 }
@@ -72,10 +77,6 @@ void	create_philosopher(t_list *list, int i)
 		return (free_all(list), print_error(3));
 	if (pthread_mutex_init(&list->philosophers[i]->lock_end, NULL) != 0)
 		return (free_all(list), print_error(3));
-	if (i != 0)
-		list->philosophers[i]->prev = list->philosophers[i - 1];
-	if (i != list->philo_nb)
-		list->philosophers[i]->next = list->philosophers[i + 1];
 }
 
 void	create_philosophers(t_list *list)
@@ -88,6 +89,4 @@ void	create_philosophers(t_list *list)
 		create_philosopher(list, i);
 		i++;
 	}
-	list->philosophers[0]->prev = list->philosophers[list->philo_nb - 1];
-	list->philosophers[list->philo_nb - 1]->next = list->philosophers[0];
 }

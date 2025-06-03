@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:16:30 by norban            #+#    #+#             */
-/*   Updated: 2025/01/28 18:31:05 by norban           ###   ########.fr       */
+/*   Updated: 2025/05/23 15:53:47 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,4 +33,5 @@ int	main(int ac, char **av)
 	create_philosophers(list);
 	create_threads(list);
 	free_all(list);
+	return (0);
 }

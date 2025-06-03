@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 13:27:12 by norban            #+#    #+#             */
-/*   Updated: 2025/01/31 14:51:21 by norban           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:32:45 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,6 @@ typedef struct s_philosophers
 	pthread_mutex_t			lock_last_eat;
 	pthread_mutex_t			lock_end;
 	int						end_status;
-	struct s_philosophers	*next;
-	struct s_philosophers	*prev;
 	t_timers				*timers;
 }	t_phil;
 
@@ -58,6 +56,12 @@ typedef struct s_list
 	t_phil	**philosophers;
 }	t_list;
 
+typedef struct s_thread_arg
+{
+	int		index;
+	t_phil	**philosophers;
+}	t_thread_arg;
+
 t_list	*create_list(char **av, long time_ms);
 void	create_philosophers(t_list *list);
 void	*routine(void *phil);
@@ -66,6 +70,7 @@ void	print_log(int code, int id, long time_start);
 int		ft_atoi(const char *str);
 void	create_threads(t_list *list);
 void	free_all(t_list *list);
+void	free_all_philo(t_phil **philo);
 void	frag_sleep(int duration);
 
 #endif
