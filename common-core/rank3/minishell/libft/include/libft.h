@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 10:51:07 by norban            #+#    #+#             */
-/*   Updated: 2025/02/06 04:55:57 by norban           ###   ########.fr       */
+/*   Updated: 2025/06/05 15:11:09 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int		ft_isdigit(int c);
 int		ft_isascii(int c);
 int		ft_isalnum(int c);
 int		ft_isprint(int c);
+int		ft_isspace(int c);
 size_t	ft_strlen(const char *str);
 void	*ft_memset(void *b, int c, size_t n);
 void	ft_bzero(void *s, size_t n);
@@ -53,7 +54,9 @@ void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(char *src);
 char	*ft_substr(const char *s, unsigned int start, size_t len);
 char	*ft_strjoin(const char *s1, const char *s2);
+char	*ft_strjoin_nl(const char *s1, const char *s2);
 char	*ft_strtrim(const char *s1, const char *set);
+int		ft_strtrimlen(const char *s);
 char	**ft_split(const char *s, char c);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
@@ -80,5 +83,7 @@ int		process_rest_to_line(char **buf, char **line);
 char	*get_next_line(int fd);
 void	gnl_free(char **ptr);
 char	*str_replace(char *src, char *str1, char *str2);
+char	*ft_strntrim(const char *s1, const char *set, int n);
+void	sortstrings(char **tab, int n);
 
 #endif

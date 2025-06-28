@@ -1,0 +1,16 @@
+git branch //verif la branche
+git checkout *name* // mettre sur la bonne branche si je suis pas sur la bonne branch
+git fetch
+git add *files*
+git commit
+git push //si necessaire
+
+/*TEST*/
+git checkout main
+git pull branch1
+git pull branch2
+
+apres test si necessaire
+
+git checkout *name*
+git pull origin main

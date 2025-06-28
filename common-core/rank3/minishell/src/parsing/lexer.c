@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 17:38:27 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 13:08:22 by norban           ###   ########.fr       */
+/*   Updated: 2025/06/13 17:02:42 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	create_token(t_token **lexer, char *src, int len)
 {
 	char	*s;
 	t_token	*lex;
-	
+
 	s = ft_substr(src, 0, len);
 	if (!s)
 		return (1);
@@ -52,11 +52,22 @@ int	create_token(t_token **lexer, char *src, int len)
 			lex->data_type = PIPE;
 		else if (ft_strlen(s) == 2
 			&& ((s[0] == '<' && s[1] == '<')
-			|| (s[0] == '>' && s[1] == '>')))
+				|| (s[0] == '>' && s[1] == '>')))
 			lex->data_type = REDIRECTION;
 	}
 	lex->str = s;
 	add_to_lexer(lexer, lex);
+	return (0);
+}
+
+int	check_redirection(char *line, int i)
+{
+	if (line[i] && line[i + 1]
+		&& ((line[i] == '<' && line[i + 1] == '<')
+			|| ((line[i] == '>') && line[i + 1] == '>')))
+		return (2);
+	if (line[i] == '<' || line[i] == '>' || line[i] == '|')
+		return (1);
 	return (0);
 }
 
@@ -66,12 +77,8 @@ int	get_next_sep(char *line)
 	char	quote;
 
 	i = 0;
-	if (line[i] && line[i + 1] 
-		&& ((line[i] == '<' && line[i + 1] == '<')
-		|| ((line[i] == '>') && line[i + 1] == '>')))
-		return (2);
-	if (line[i] == '<' || line[i] == '>' || line[i] == '|')
-		return (1);
+	if (check_redirection(line, i) != 0)
+		return (check_redirection(line, i));
 	while (line[i] && line[i] != '<' && line[i] != '>'
 		&& line[i] != ' ' && line[i] != '|')
 	{
@@ -98,23 +105,22 @@ int	lexer(t_token **lexer, char **line)
 	int		i;
 	int		j;
 	char	*tmp_line;
-	
+
 	tmp_line = ft_strtrim(*line, " ");
-	free(*line);
-	*line = tmp_line;
 	i = 0;
-	if (!*line)
+	if (!tmp_line)
 		return (1);
-	while (line[0][i])
+	while (tmp_line[i])
 	{
-		while (line[0][i] && line[0][i] == ' ')
+		while (tmp_line[i] && tmp_line[i] == ' ')
 			i++;
 		j = get_next_sep(*line + i);
 		if (j == -1)
-			return (printf("quote not ended properly\n"), 1);
-		if (create_token(lexer, *line + i, j) == 1)
-			return (printf("malloc error\n"), free(*line), 1);
+			return (printf("quote not ended properly\n"), free(tmp_line), 1);
+		if (create_token(lexer, tmp_line + i, j) == 1)
+			return (printf("malloc error\n"), free(tmp_line), 1);
 		i += j;
 	}
-	return  (0);
+	free(tmp_line);
+	return (0);
 }

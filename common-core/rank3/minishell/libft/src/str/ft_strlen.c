@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/08 14:35:32 by norban            #+#    #+#             */
-/*   Updated: 2025/01/10 10:46:31 by norban           ###   ########.fr       */
+/*   Updated: 2025/05/02 14:54:14 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *str)
 	int	i;
 
 	i = 0;
+	if (!str[i] || !str)
+		return (i);
 	while (str[i])
 		i++;
 	return (i);

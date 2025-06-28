@@ -6,63 +6,72 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 00:17:34 by norban            #+#    #+#             */
-/*   Updated: 2025/04/17 15:33:21 by norban           ###   ########.fr       */
+/*   Updated: 2025/06/13 20:18:19 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	g_last_exit_status = 0;
+
 t_datashell	*create_minishell(char **environment)
 {
 	t_datashell	*data;
-	int			i;
+	char		*env_lvl;
+	int			env_lvl_i;
+	char		*new_env_lvl;
 
-	i = 0;
 	data = malloc(sizeof(t_datashell));
 	if (!data)
 		return (NULL);
 	data->cmd_list = NULL;
 	data->lexer = NULL;
+	if (!environment)
+		return (free(data), NULL);
 	if (env_to_llist(environment, data) == 1)
 		return (free(data), NULL);
-	return (data);
+	env_lvl = get_value(get_env("SHLVL", data->env_start)->str);
+	env_lvl_i = ft_atoi(env_lvl);
+	new_env_lvl = ft_itoa(env_lvl_i + 1);
+	update_env(data, "SHLVL", new_env_lvl);
+	data->return_val = 0;
+	data->end_flag = -1;
+	return (free(new_env_lvl), free(env_lvl), data);
 }
 
-void	print_lexer(t_token **lexer)
+int	check_process(t_datashell **data, char **line)
 {
-	t_token *crt;
-	crt = *lexer;
-	printf("\nLexer : \n");
-	while (crt)
-	{
-		printf("%s -> ", crt->str);
-		crt = crt->right;
-	}
-	printf("\n");
-	printf("\n");
+	if (g_last_exit_status == 130)
+		(*data)->return_val = 130;
+	g_last_exit_status = 0;
+	if (*line && ft_strtrimlen(*line) == 0)
+		return (free(*line), 1);
+	else if (!(*line))
+		return (bi_exit(*data, NULL), 1);
+	return (0);
 }
 
-void	print_cmds(t_cmd *cmd)
+int	process_exec(t_datashell **data, char **line, int *cmd_result)
 {
-	t_cmd	*crt;
-	int		i;
-	
-	crt = cmd;
-	printf("Cmd llist :\n");
-	while (crt)
+	t_token	*last_lxr;
+
+	if (!lexer(&(*data)->lexer, line)
+		&& !expander((*data), -1) && (*data)->lexer)
 	{
-		printf("String command : %s\nRedirection arrays\n", crt->str);
-		i = 0;
-		while (crt->red_id[i] != 0)
+		if (parse_lexer((*data)->lexer) != 1 && lexer_to_cmds(*data) != 1)
 		{
-			printf("red ID : %d -> red file : %s\n", crt->red_id[i], crt->red_file[i]);
-			i++;
+			last_lxr = (*data)->lexer;
+			while (last_lxr->right)
+				last_lxr = last_lxr->right;
+			update_env(*data, "_", last_lxr->str);
+			*cmd_result = exec_line(*data);
 		}
-		if (i == 0)
-			printf("no redirection\n");
-		printf("\n");
-		crt = crt->next;
+		else
+			*cmd_result = 2;
 	}
+	add_history(*line);
+	free(*line);
+	return (0);
 }
 
 int	main(int ac, char **av, char **env)
@@ -70,52 +79,26 @@ int	main(int ac, char **av, char **env)
 	char		*line;
 	t_datashell	*data;
 	int			cmd_result;
+	int			end;
 
+	signal_parent();
 	cmd_result = 0;
-	signal_handler();
 	data = create_minishell(env);
 	if (!data)
-		printf("error\n");
-		//print_error(0);
-	while (data)
+		printf("Error\n");
+	while (data->end_flag == -1)
 	{
 		free_lexer(&data->lexer);
+		free_cmds(data);
 		data->lexer = NULL;
-		line = readline("maxi-total ⛽ > ");
-		if (line && ft_strlen(line) == 0)
-			free(line);
-		else if (!line || ft_strncmp(line, "exit", 5) == 0)
-		{
-			free(line);
-			free_minishell(data);
-			data = NULL;
-		}
-		else if (ft_strncmp(line, "$?", 2) == 0)
-			printf("%d\n", cmd_result);
+		if (isatty(STDIN_FILENO))
+			line = readline("maxi-total ⛽ > ");
 		else
-		{
-			if (lexer(&data->lexer, &line))
-			{
-				free(line);
-				free_lexer(&data->lexer);
-				exit(1);
-			}
-			else
-			{
-				expander(data->lexer, data->env_start);
-				if (parse_lexer(data->lexer) != 1)
-				{
-					lexer_to_cmds(data);
-					print_lexer(&data->lexer);
-					print_cmds(data->cmd_list);
-				}
-			}
-			add_history(line);
-			free(line);
-		}
+			line = NULL;
+		if (check_process(&data, &line) == 0)
+			process_exec(&data, &line, &cmd_result);
 	}
-	free_minishell(data);
-	(void)ac;
-	(void)av;
-	return (0);
+	end = data->end_flag;
+	(void)av[ac];
+	return (free_minishell(data), end);
 }

@@ -6,12 +6,12 @@
 #    By: norban <norban@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/14 22:07:22 by norban            #+#    #+#              #
-#    Updated: 2025/02/06 04:46:53 by norban           ###   ########.fr        #
+#    Updated: 2025/06/05 15:10:20 by norban           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-CC = gcc
+CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 INC = include
@@ -36,7 +36,9 @@ SRCS_LIST = is/ft_islower.c \
 			is/ft_isalnum.c \
 			is/ft_isascii.c \
 			is/ft_isprint.c \
+			is/ft_isspace.c \
 			str/ft_strlen.c \
+			str/ft_strtrimlen.c \
 			mem/ft_memset.c \
 			mem/ft_bzero.c \
 			mem/ft_memcpy.c \
@@ -57,7 +59,10 @@ SRCS_LIST = is/ft_islower.c \
 			is/ft_isupper.c \
 			str/ft_substr.c \
 			str/ft_strjoin.c \
+			str/ft_strjoin_nl.c \
 			str/ft_strtrim.c \
+			str/ft_strntrim.c \
+			str/sortstring.c \
 			str/ft_split.c \
 			str/ft_free_split.c \
 			str/str_replace.c \

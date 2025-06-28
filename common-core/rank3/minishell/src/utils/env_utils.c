@@ -6,7 +6,7 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/02 16:25:26 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 13:27:58 by norban           ###   ########.fr       */
+/*   Updated: 2025/06/13 20:23:41 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,9 @@ t_env	*extract_env(char *str)
 		return (NULL);
 	env->next = NULL;
 	env->prev = NULL;
-	env->str = str;
+	env->str = ft_strdup(str);
+	if (!env->str)
+		return (free(env), NULL);
 	return (env);
 }
 
@@ -29,8 +31,11 @@ int	env_to_llist(char **environment, t_datashell *data)
 {
 	int		i;
 	t_env	*crt;
+	t_env	*new;
+
+	data->env_start = NULL;
 	if (!environment || !environment[0])
-		return (0);
+		return (get_base_env(data), 0);
 	i = 0;
 	data->env_start = extract_env(environment[i]);
 	if (!data->env_start)
@@ -39,12 +44,15 @@ int	env_to_llist(char **environment, t_datashell *data)
 	crt = data->env_start;
 	while (environment[i])
 	{
-		crt->next = extract_env(environment[i]);
-		if (!crt->next)
+		new = extract_env(environment[i]);
+		if (!new)
 			return (1);
+		new->prev = crt;
+		crt->next = new;
 		i++;
-		crt = crt->next;
+		crt = new;
 	}
+	check_oldpwd(data);
 	return (0);
 }
 
@@ -52,39 +60,35 @@ int	add_env(char *new_env_str, t_datashell *data)
 {
 	t_env	*crt;
 	t_env	*new_env;
-	
-	crt = data->env_start;
-	while (crt->next)
-		crt = crt->next;
+
 	new_env = extract_env(new_env_str);
 	if (!new_env)
 		return (1);
+	if (!data->env_start)
+	{
+		data->env_start = new_env;
+		return (0);
+	}
+	crt = data->env_start;
+	while (crt->next)
+		crt = crt->next;
 	crt->next = new_env;
-	crt->next->prev = crt;
+	new_env->prev = crt;
 	return (0);
 }
 
-int	remove_env(t_env *env)
+int	remove_env(t_env *env, t_datashell *data)
 {
+	if (!env)
+		return (1);
+	if (data->env_start == env)
+		data->env_start = env->next;
 	if (env->prev)
 		env->prev->next = env->next;
 	if (env->next)
 		env->next->prev = env->prev;
+	free(env->str);
 	free(env);
 	env = NULL;
 	return (0);
-}
-
-t_env	*get_env(char *env_name, t_env *env_start)
-{
-	t_env	*crt;
-	
-	crt = env_start;
-	while (crt)
-	{
-		if (ft_strncmp(env_name, crt->str, ft_strlen(env_name)) == 0)
-			return (crt);
-		crt = crt->next;
-	}
-	return (NULL);
 }

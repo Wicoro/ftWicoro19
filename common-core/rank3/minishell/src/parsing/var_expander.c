@@ -6,165 +6,125 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 14:43:26 by norban            #+#    #+#             */
-/*   Updated: 2025/04/16 13:15:35 by norban           ###   ########.fr       */
+/*   Updated: 2025/06/13 20:18:29 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_var_value(char *str, t_env *env_start)
+static int	squote_expander(char **str, int trim_start)
 {
-	t_env	*crt;
+	int		i;
+	char	*tmp_str;
+	char	*tmp_str2;
 
-	crt = env_start;
+	i = trim_start;
+	tmp_str = ft_strnreplace(*str, "'", "", trim_start);
+	if (!tmp_str)
+		return (1);
+	while (tmp_str[i])
+	{
+		if (tmp_str[i] == '\'')
+		{
+			tmp_str2 = ft_strnreplace(tmp_str, "'", "", i);
+			if (!tmp_str2)
+				return (1);
+			free(*str);
+			free(tmp_str);
+			*str = tmp_str2;
+			return (i - 1 - trim_start);
+		}
+		i++;
+	}
+	return (i - 1 - trim_start);
+}
+
+static int	dquote_expander(char **str, int trim_start, t_datashell *data)
+{
+	int		len;
+	char	*tmp_str;
+	char	*quoted_str;
+	char	*inter_quoted_str;
+	char	*i_quoted_str_t;
+
+	quoted_str = ft_substr(*str, trim_start,
+			ft_strchr(*str + trim_start + 1, '"') - (*str + trim_start) + 1);
+	if (!quoted_str)
+		return (1);
+	inter_quoted_str = loop_var_exchanger(quoted_str, data);
+	if (!inter_quoted_str)
+		return (1);
+	i_quoted_str_t = ft_strtrim(inter_quoted_str, "\"");
+	if (!i_quoted_str_t)
+		return (1);
+	tmp_str = ft_strnreplace(*str, quoted_str, i_quoted_str_t, trim_start);
+	if (!(tmp_str))
+		return (1);
+	free(*str);
+	*str = tmp_str;
+	free(quoted_str);
+	free(inter_quoted_str);
+	len = ft_strlen(i_quoted_str_t) - 1;
+	return (free(i_quoted_str_t), len);
+}
+
+int	check_empty_expander(t_token *crt, int *i, t_datashell *data)
+{
+	if (crt->str[*i] == '$' && crt->str[(*i) + 1] && crt->str[(*i) + 1] != '$'
+		&& ((crt->left && ft_strncmp(crt->left->str, "<<", 3) != 0)
+			|| !crt->left)
+		&& (ft_isprint(crt->str[*i + 1]) && crt->str[*i] != '"'))
+	{
+		if (exchanger(&crt->str, *i,
+				data->env_start, data->return_val) != 0)
+			return (1);
+		else
+			(*i)--;
+	}
+	return (0);
+}
+
+void	remove_token(t_token **crt, t_datashell **data)
+{
+	t_token	*next;
+
+	next = (*crt)->right;
+	if ((*data)->lexer == (*crt))
+		(*data)->lexer = (*crt)->right;
+	if ((*crt)->left)
+		(*crt)->left->right = (*crt)->right;
+	if ((*crt)->right)
+		(*crt)->right->left = (*crt)->left;
+	free((*crt)->str);
+	free((*crt));
+	(*crt) = next;
+}
+
+int	expander(t_datashell *data, int i)
+{
+	t_token	*crt;
+	char	*r;
+
+	crt = data->lexer;
 	while (crt)
 	{
-		if (ft_strncmp(str + 1, crt->str, ft_strlen(str) - 1) == 0)
-			return (ft_substr(crt->str, ft_strlen(str),
-				ft_strlen(crt->str) - ft_strlen(str)));
-		crt = crt->next;
-	}
-	return (ft_strdup(""));
-}
-
-char	*get_var_name(char *str)
-{
-	int		i;
-	char	*var_name;
-	char	*var_name_extended;
-
-	i = 1;
-	while (str[i] && str[i] != ' ' && str[i] != '\"' && str[i] != '\'')
-		i++;
-	var_name = ft_substr(str, 1, i - 1);
-	if (!var_name)
-		return (NULL);
-	var_name_extended = ft_strjoin("$", var_name);
-	free(var_name);
-	return (var_name_extended);
-}
-
-char	*ft_strnreplace(char *str, char *var_name, char *var_value, int start)
-{
-	int		i;
-	int		j;
-	int		k;
-	char	*new_str;
-	
-	new_str = malloc(sizeof(char) * (ft_strlen(str) - ft_strlen(var_name) + ft_strlen(var_value) + 1));
-	i = 0;
-	j = 0;
-	k = 0;
-	while (str[j] && str[i] && i < start)
-		new_str[i++] = str[j++];
-	while (str[j] && str[j] != var_name[0])
-		new_str[i++] = str[j++];
-	j += ft_strlen(var_name);
-	while (var_value[k])
-		new_str[i++] = var_value[k++];
-	while (str[j])
-		new_str[i++] = str[j++];
-	new_str[i] = '\0';
-	return (new_str);
-}
-
-char	*var_exchanger(char *str, t_env *env_start, int start, int len)
-{
-	int		i;
-	char	*var_name;
-	char	*var_value;
-	char	*new_str;
-	char	*new_str2;
-
-	i = start;
-	if (!str)
-		return (NULL);
-	new_str = ft_strdup(str);
-	while (new_str[i] && i < len)
-	{
-		if (new_str[i] == '$' && new_str[i + 1])
-		{
-			var_name = get_var_name(&new_str[i]);
-			var_value = get_var_value(var_name, env_start);
-			new_str2 = ft_strdup(new_str);
-			free(new_str);
-			new_str = ft_strnreplace(new_str2, var_name, var_value, i);
-			free(new_str2);
-			if (!new_str)
-				return (NULL);
-			free(var_name);
-			free(var_value);
-			i = -1;
-		}
-		i++;
-	}
-	return (new_str);
-}
-
-int	squote_expander(char **str, int trim_start)
-{
-	char	*new_str;
-	int		len;
-	
-	len = 0;
-	while (str[0][trim_start + len + 1] != '\'')
-		len++;
-	new_str = ft_strnreplace(str[0], "'", "", trim_start);
-	free(*str);
-	*str = new_str;
-	new_str = ft_strnreplace(str[0], "'", "", trim_start);
-	free(*str);
-	*str = new_str;
-	return (--len);
-}
-
-int	dquote_expander(char **str, int trim_start, t_env *env_start)
-{
-	char	*new_str;
-	int		quote_len;
-	
-	quote_len = 1;
-	while (str[0][trim_start + quote_len] && str[0][trim_start + quote_len] != '"')
-		quote_len++;
-	new_str = var_exchanger(str[0], env_start, trim_start, quote_len);
-	free(*str);
-	*str = new_str;
-	new_str = ft_strnreplace(str[0], "\"", "", trim_start);
-	free(*str);
-	*str = new_str;
-	new_str = ft_strnreplace(str[0], "\"", "", trim_start);
-	free(*str);
-	*str = new_str;
-	return (ft_strlen(*str));
-}
-
-int	expander(t_token *lexer, t_env *env_start)
-{
-	int		i;
-	t_token	*crt;
-	char	*new_str;
-
-	crt = lexer;
-	i = 0;
-	while (crt && crt->str[i])
-	{
-		i = 0;
-		while (crt->str && crt->str[i])
+		r = ft_strdup(crt->str);
+		i = -1;
+		while (crt->str && crt->str[++i])
 		{
 			if (crt->str[i] == '\'')
-				i = squote_expander(&crt->str, i);
-			else if (crt->str[i] == '"')
-				i = dquote_expander(&crt->str, i, env_start);
-			else if (crt->str[i] == '$')
-			{
-				new_str = var_exchanger(crt->str, env_start, i, 2);
-				free(crt->str);
-				crt->str = new_str;
-			}
-			i++;
+				i += squote_expander(&crt->str, i);
+			else if (crt->str[i] == '"'
+				&& ft_strncmp(crt->left->str, "<<", 3) != 0)
+				i += dquote_expander(&crt->str, i, data);
+			else if (check_empty_expander(crt, &i, data) == 1)
+				return (free(r), 1);
 		}
-		i = 0;
-		crt = crt->right;
+		if (ft_strncmp(crt->str, r, 21474836) != 0 && ft_strlen(crt->str) == 0)
+			remove_token(&crt, &data);
+		else
+			crt = crt->right;
+		free(r);
 	}
 	return (0);
 }

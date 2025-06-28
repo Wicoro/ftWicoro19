@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/10 12:10:28 by norban            #+#    #+#             */
-/*   Updated: 2025/04/10 13:35:04 by norban           ###   ########.fr       */
+/*   Created: 2025/05/05 02:26:24 by norban            #+#    #+#             */
+/*   Updated: 2025/06/14 13:38:28 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,23 @@ char	*concat_cmd_str(t_token *node)
 	char	*new_str;
 	char	*tmp_str;
 	char	*tmp_str2;
-	
+
 	crt = node;
 	new_str = ft_strdup("");
 	if (!new_str)
 		return (NULL);
 	while (crt && crt->data_type != PIPE)
 	{
-		if (crt->data_type == WORD && (!crt->left || crt->left->data_type != REDIRECTION))
+		if (crt->data_type == WORD && (!crt->left
+				|| crt->left->data_type != REDIRECTION))
 		{
 			tmp_str2 = ft_strjoin(new_str, " ");
 			free(new_str);
 			tmp_str = ft_strjoin(tmp_str2, crt->str);
 			free(tmp_str2);
 			new_str = tmp_str;
+			if (!new_str)
+				return (free(new_str), NULL);
 		}
 		crt = crt->right;
 	}
@@ -71,7 +74,7 @@ int	get_red_count(t_token *ref_node)
 {
 	t_token	*crt;
 	int		count;
-	
+
 	crt = ref_node;
 	count = 0;
 	while (crt && crt->data_type != PIPE)
@@ -83,37 +86,13 @@ int	get_red_count(t_token *ref_node)
 	return (count);
 }
 
-t_cmd	*create_cmd(t_token *crt)
-{
-	t_cmd	*cmd;
-	int		red_count;
-	
-	cmd = malloc(sizeof(t_cmd));
-	if (!cmd)
-		return (NULL);
-	cmd->next = NULL;
-	cmd->str = concat_cmd_str(crt);
-	red_count = get_red_count(crt);
-	cmd->red_id = malloc(sizeof(int) * (red_count + 1));
-	if (!cmd->red_id)
-		return (free(cmd), NULL);
-	cmd->red_file = malloc(sizeof(char *) * (red_count + 1));
-	if (!cmd->red_file)
-		return (free(cmd), free(cmd->red_id), NULL);
-	cmd->red_id[red_count] = 0;
-	cmd->red_file[red_count] = NULL;
-	if (get_redirection(crt, cmd->red_id, cmd->red_file) == 1)
-		return (free(cmd), free(cmd->red_id), free(cmd->red_file), NULL);
-	return (cmd);
-}
-
 int	lexer_to_cmds(t_datashell *data)
 {
 	t_token	*crt_node;
 	t_cmd	*crt_cmd;
-	
+
 	crt_node = data->lexer;
-	data->cmd_list = create_cmd(crt_node);
+	data->cmd_list = create_cmd(crt_node, data);
 	if (!data->cmd_list)
 		return (1);
 	crt_cmd = data->cmd_list;
@@ -124,9 +103,9 @@ int	lexer_to_cmds(t_datashell *data)
 		if (crt_node && crt_node->data_type == PIPE)
 		{
 			crt_node = crt_node->right;
-			crt_cmd->next = create_cmd(crt_node);
+			crt_cmd->next = create_cmd(crt_node, data);
 			if (!crt_cmd->next)
-				return (free_cmds(data), 1);
+				return (1);
 			crt_cmd = crt_cmd->next;
 		}
 	}

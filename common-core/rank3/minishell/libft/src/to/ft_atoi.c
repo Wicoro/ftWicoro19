@@ -6,20 +6,11 @@
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 11:07:25 by norban            #+#    #+#             */
-/*   Updated: 2025/01/10 10:47:17 by norban           ###   ########.fr       */
+/*   Updated: 2025/04/23 16:45:55 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-
-static int	ft_isspace(char c)
-{
-	if (c == ' ' || c == '\f'
-		|| c == '\n' || c == '\t'
-		|| c == '\r' || c == '\v')
-		return (1);
-	return (0);
-}
 
 static int	ft_lltoobig(int mult)
 {
