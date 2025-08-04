@@ -38,7 +38,7 @@ re:			fclean all
 
 clean:
 			@echo "$(YELLOW)📦 Cleaning object files $(DEF_COLOR)"
-			@rm -rf $(OBJ_DIR)/*.o
+			@rm -rf $(OBJ_DIR)
 
 fclean:		clean
 			@echo "🗑 $(YELLOW) Cleaning $(NAME) $(DEF_COLOR)"

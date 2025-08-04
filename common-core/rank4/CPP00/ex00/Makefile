@@ -22,7 +22,7 @@ WHITE		=	\033[0;97m
 BOLD		=	\033[1m
 UNDERLINE	=	\033[4m
 
-SRC_LIST	= 	megaphone.cpp
+SRC_LIST	= 	Megaphone.cpp
 
 OBJS		= 	$(addprefix $(OBJ_DIR), $(SRC_LIST:.cpp=.o))
 
@@ -37,7 +37,7 @@ re:			fclean all
 
 clean:
 			@echo "$(YELLOW)📦 Cleaning object files $(DEF_COLOR)"
-			@rm -rf $(OBJ_DIR)/*.o
+			@rm -rf $(OBJ_DIR)
 
 fclean:		clean
 			@echo "🗑 $(YELLOW) Cleaning $(NAME) $(DEF_COLOR)"

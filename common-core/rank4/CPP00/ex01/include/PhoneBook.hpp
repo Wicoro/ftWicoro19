@@ -1,17 +1,24 @@
 #ifndef PHONEBOOK_HPP
-#define PHONEBOOK_HPP
+# define PHONEBOOK_HPP
 
-#include "Contact.hpp"
+# include "Contact.hpp"
+# include <iostream>
+# include <iomanip>
+# include <sstream>
+# include <limits>
 
 class PhoneBook {
+private:
+	Contact contacts[8];
+	int		last_index;
 public:
-    Contact contacts[8];
-
     PhoneBook() {}
     ~PhoneBook() {}
 
-    void addContact();
-	void searchContact();
+    void	addContact();
+	void	searchContact();
+	void	setLastIndex(int i);
+	int		getLastIndex();
 };
 
 #endif // PHONEBOOK_HPP

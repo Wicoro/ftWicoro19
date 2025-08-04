@@ -1,34 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   phonebook.cpp                                      :+:      :+:    :+:   */
+/*   Phonebook.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:50:34 by norban            #+#    #+#             */
-/*   Updated: 2025/05/19 11:57:36 by norban           ###   ########.fr       */
+/*   Updated: 2025/08/04 14:55:09 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <iostream>
-#include <iomanip>
-#include <sstream>
 #include "PhoneBook.hpp"
 
 void PhoneBook::addContact() {
     int i;
     std::string firstname, lastname, nickname, phone_nb, secret;
 
-    for (i = 0; i < 8; i++) {
-        if (this->contacts[i].firstname.empty()) {
-            break;
-        }
-    }
-    if (i == 8) {
-        std::cout << "Phone Book is full!" << std::endl;
-        return;
-    }
-
+    if (getLastIndex() == 8)
+		setLastIndex(0);
+	i = getLastIndex();
+		
     std::cout << "First name: ";
     if (!(std::cin >> firstname))
 	{
@@ -65,12 +56,13 @@ void PhoneBook::addContact() {
 		std::cin.clear();
 		return ;
 	}
-    this->contacts[i].firstname = firstname;
-    this->contacts[i].lastname = lastname;
-    this->contacts[i].nickname = nickname;
-    this->contacts[i].phone_nb = phone_nb;
-    this->contacts[i].secret = secret;
-
+    this->contacts[i].setFirstName(firstname);
+    this->contacts[i].setLastName(lastname);
+    this->contacts[i].setNickname(nickname);
+    this->contacts[i].setPhoneNumber(phone_nb);
+    this->contacts[i].setSecret(secret);
+	setLastIndex(getLastIndex() + 1);
+	
     std::cout << "Contact added successfully!" << std::endl;
 }
 
@@ -87,22 +79,54 @@ void PhoneBook::searchContact() {
 	std::cout << std::setw(10) << "Index" << "|"
 				<< std::setw(10) << "First Name" << "|"
 				<< std::setw(10) << "Last Name" << "|"
-				<< std::setw(10) << "Darkest secret" << std::endl;
+				<< std::setw(10) << "Nickname" << std::endl;
 
 	for (int i = 0; i < 8; i++) {
-		if (!contacts[i].firstname.empty()) {
+		if (!contacts[i].getFirstName().empty()) {
 			std::cout << std::setw(10) << i << "|"
-						<< formatField(contacts[i].firstname) << "|"
-						<< formatField(contacts[i].lastname) << "|"
-						<< formatField(contacts[i].nickname) << std::endl;
+						<< formatField(contacts[i].getFirstName()) << "|"
+						<< formatField(contacts[i].getLastName()) << "|"
+						<< formatField(contacts[i].getNickname()) << std::endl;
 		}
 	}
+	
+	int readindex;
+	std::cout << "\nEnter contact ID: ";
+	if (!(std::cin >> readindex)) {
+		if (std::cin.fail()) {
+			std::cin.clear();
+			std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+			std::cout << "\nInvalid ID\n";
+			return ;
+		}
+		if (std::cin.eof()) {
+			std::cout << "\nEOF detected. Exiting\n";
+		}
+		return ;
+	}
+	if (readindex > 7 || readindex < 0 || contacts[readindex].getFirstName().empty())
+		std::cout << "\nInvalid ID\n";
+	else
+		std::cout <<
+					"FirstName : " << contacts[readindex].getFirstName() << std::endl <<
+					"LastName : " << contacts[readindex].getLastName() << std::endl <<
+					"Nickname : "	<< contacts[readindex].getNickname() << std::endl <<
+					"Phone Number : " << contacts[readindex].getPhoneNumber() << std::endl;
 }
 
+void PhoneBook::setLastIndex(int i) {
+	this->last_index = i;
+}
+
+int PhoneBook::getLastIndex() {
+	return (this->last_index);
+}
+	
 int main() {
     PhoneBook phonebook;
 	std::string readline;
 
+	phonebook.setLastIndex(0);
 	while (true)
 	{
 		std::cout << "\nEnter command (ADD, SEARCH, EXIT): ";

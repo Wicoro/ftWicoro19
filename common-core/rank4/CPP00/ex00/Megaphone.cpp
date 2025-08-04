@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   megaphone.cpp                                      :+:      :+:    :+:   */
+/*   Megaphone.cpp                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: norban <norban@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 11:17:10 by norban            #+#    #+#             */
-/*   Updated: 2025/05/14 11:17:39 by norban           ###   ########.fr       */
+/*   Updated: 2025/08/04 14:48:44 by norban           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ int main(int argc, char* argv[]) {
         for (int i = 1; i < argc; i++) {
             std::string arg(argv[i]);
             to_uppercase(arg);
-            if (i != argc - 1) {
-                std::cout << arg << "\n";
+            if (i == argc - 1) {
+                std::cout << arg;
             } else {
                 std::cout << arg;
             }
