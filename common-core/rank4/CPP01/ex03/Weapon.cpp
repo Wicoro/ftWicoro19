@@ -18,7 +18,7 @@ Weapon& Weapon::operator=(const Weapon& other) {
 }
 
 Weapon::~Weapon() {
-	std::cout << type << " is behind peashotted away\n";
+	std::cout << type << " existance is vanishing\n";
 }
 
 void Weapon::setType(std::string type)

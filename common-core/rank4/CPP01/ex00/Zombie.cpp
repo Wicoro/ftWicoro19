@@ -10,7 +10,7 @@ Zombie::Zombie(const Zombie& other) : name(other.name) {
 }
 
 Zombie& Zombie::operator=(const Zombie& other) {
-	if (this != &other) { // Check for self-assignment
+	if (this != &other) {
 		name = other.name;
 		std::cout << "Copy assignment operator called for " << other.name << std::endl;
 	}

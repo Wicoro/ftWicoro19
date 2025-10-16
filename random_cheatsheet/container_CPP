@@ -1,0 +1,15 @@
+| ✅ **Need...**                                   | 💡 **Use...**         | ⚙️ **Notes**                                                         |
+| ------------------------------------------------ | --------------------- | -------------------------------------------------------------------- |
+| Fast random access + dynamic resizing            | `std::vector`         | Best for array-like data, fast `[i]` access, efficient push_back     |
+| Fast insert/remove at **both ends**              | `std::deque`          | Double-ended queue; slower `[i]` than vector, but no reallocations   |
+| Frequent insert/remove in **middle or ends**     | `std::list`           | Doubly linked list; no random access, stable iterators               |
+| Memory-efficient, forward-only linked list       | `std::forward_list`   | Singly linked list; no `.size()`, no backward traversal              |
+| Unique, sorted values                            | `std::set`            | Red-black tree; elements are keys, sorted automatically              |
+| Duplicate, sorted values                         | `std::multiset`       | Like set, but allows duplicates                                      |
+| Key-value pairs, sorted by key                   | `std::map`            | Red-black tree; keys unique and sorted                               |
+| Key-value pairs, sorted, **with duplicate keys** | `std::multimap`       | Like map, but allows duplicate keys                                  |
+| Fast key-value lookup (no order)                 | `std::unordered_map`  | Hash table; faster than `map` on average, keys are not ordered       |
+| Fast unique element lookup (no order)            | `std::unordered_set`  | Hash table version of `set`                                          |
+| Stack behavior (LIFO)                            | `std::stack`          | Adapter (by default uses `deque`); no iteration or access except top |
+| Queue behavior (FIFO)                            | `std::queue`          | Adapter (default uses `deque`); push_back, pop_front                 |
+| Max-priority element at all times                | `std::priority_queue` | Binary heap (usually on `vector`); always gives largest element      |

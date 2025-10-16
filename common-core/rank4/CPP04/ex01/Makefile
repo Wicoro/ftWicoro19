@@ -1,6 +1,6 @@
 CC = g++
 
-NAME		= ClapTrap
+NAME		= Brain
 
 INC			= include
 CFLAGS		= -Wall -Wextra -Werror -std=c++98
@@ -23,7 +23,10 @@ BOLD		=	\033[1m
 UNDERLINE	=	\033[4m
 
 SRC_LIST	=	main.cpp \
-				ClapTrap.cpp
+				Cat.cpp \
+				Dog.cpp \
+				Brain.cpp \
+				Animal.cpp
 
 OBJS		= 	$(addprefix $(OBJ_DIR), $(SRC_LIST:.cpp=.o))
 

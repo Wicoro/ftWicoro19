@@ -22,10 +22,12 @@ WHITE		=	\033[0;97m
 BOLD		=	\033[1m
 UNDERLINE	=	\033[4m
 
-SRC_LIST	=	main.cpp \
-				Cat.cpp \
+SRC_LIST	=	Cat.cpp \
 				Dog.cpp \
-				Animal.cpp
+				Animal.cpp \
+				WrongAnimal.cpp \
+				WrongCat.cpp \
+				main.cpp
 
 OBJS		= 	$(addprefix $(OBJ_DIR), $(SRC_LIST:.cpp=.o))
 

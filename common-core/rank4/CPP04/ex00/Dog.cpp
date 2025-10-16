@@ -13,6 +13,8 @@ Dog::Dog(const Dog& other) : Animal(other) {
 
 Dog& Dog::operator=(const Dog& other) {
 	if (this != &other) {
+		Animal::operator=(other);
+		type = other.type;
 		std::cout << "Copy assignment operator called for dog" << std::endl;
 	}
 	return *this;
@@ -27,5 +29,5 @@ std::string Dog::getType() const {
 }
 
 void Dog::makeSound() const {
-	std::cout << "Dog make a sound : meeeeeeoooow" << std::endl;
+	std::cout << "Dog make a sound : woof woof" << std::endl;
 }

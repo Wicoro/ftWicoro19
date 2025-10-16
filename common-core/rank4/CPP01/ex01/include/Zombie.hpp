@@ -16,10 +16,10 @@ public:
    ~Zombie();
 
    void announce();
-   Zombie* zombieHorde(int N, std::string name);
+   Zombie* zombieHorde(int n, std::string name);
    void setName(std::string name);
 };
 
-Zombie* zombieHorde(int N, std::string name);
+Zombie* zombieHorde(int n, std::string name);
 
 #endif

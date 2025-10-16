@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream> 
 
 std::string customReplace(const std::string& content, const std::string& s1, const std::string& s2) {
 	if (s1.empty())
@@ -41,7 +42,9 @@ int main(int argc, char** argv) {
 		return 1;
 	}
 
-	std::string content((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
+	std::stringstream buffer;
+    buffer << infile.rdbuf();
+    std::string content = buffer.str();
 	infile.close();
 
 	std::string replaced = customReplace(content, s1, s2);
